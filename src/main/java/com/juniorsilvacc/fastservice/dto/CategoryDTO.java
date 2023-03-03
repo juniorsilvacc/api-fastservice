@@ -4,37 +4,41 @@ import java.io.Serializable;
 
 import org.springframework.hateoas.RepresentationModel;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.juniorsilvacc.fastservice.domain.Category;
 
+@JsonPropertyOrder({"id", "name", "description"})
 public class CategoryDTO extends RepresentationModel<CategoryDTO> implements Serializable {
 
 	private static final long serialVersionUID = 1L; 
 	
-	private Integer id;
+	@JsonProperty("id")
+	private Integer key;
 	private String name;
 	private String description;
 	
 	public CategoryDTO() {
 	}
 
-	public CategoryDTO(Integer id, String name, String description) {
-		this.id = id;
+	public CategoryDTO(Integer key, String name, String description) {
+		this.key = key;
 		this.name = name;
 		this.description = description;
 	}
 
 	public CategoryDTO(Category obj) {
-		id = obj.getId();
+		key = obj.getId();
 		name = obj.getName();
 		description = obj.getDescription();
 	}
 
 	public Integer getId() {
-		return id;
+		return key;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	public void setId(Integer key) {
+		this.key = key;
 	}
 
 	public String getName() {
