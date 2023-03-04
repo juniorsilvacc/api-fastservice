@@ -63,4 +63,12 @@ public class CategoryService {
 		return dto;
 	}
 
+	public void delete(Integer id) {
+		Category entity = repository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException(
+						String.format("Categoria com id: %d não encontrado", id)));
+		
+		repository.delete(entity);
+	}
+
 }
