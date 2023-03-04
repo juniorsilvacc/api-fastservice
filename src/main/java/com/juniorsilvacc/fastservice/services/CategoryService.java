@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -69,6 +70,23 @@ public class CategoryService {
 						String.format("Categoria com id: %d não encontrado", id)));
 		
 		repository.delete(entity);
+	}
+
+	public CategoryDTO update(Integer id, Category category) {
+		Optional<Category> oldEntity = repository.findById(id);
+		
+		if(!oldEntity.isPresent()) {
+			throw new ResourceNotFoundException(
+					String.format("Categoria com id: %d não encontrado", id));
+		}
+		
+		BeanUtils.copyProperties(category, oldEntity.get(), "id");
+		
+		var updatedEntity = repository.save(oldEntity.get());
+		
+		CategoryDTO dto = new CategoryDTO(updatedEntity);
+		
+		return dto;
 	}
 
 }
