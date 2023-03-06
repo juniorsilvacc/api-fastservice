@@ -1,6 +1,8 @@
 package com.juniorsilvacc.fastservice.controllers;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,5 +23,9 @@ public class ProductController {
 	public ProductDTO findById(@PathVariable Integer id) {
 		return service.findById(id);
 	}
-
+	
+	@GetMapping(value = "/")
+	public List<ProductDTO> findAll() {
+		return service.findAll();
+	}
 }

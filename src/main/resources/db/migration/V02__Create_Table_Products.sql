@@ -2,7 +2,7 @@ CREATE TABLE product (
 	id SERIAL PRIMARY KEY,
 	name VARCHAR(50) NOT NULL,
 	description VARCHAR(255),
-	price DECIMAL(255) NOT NULL,
+	price NUMERIC(255) NOT NULL,
 	image VARCHAR(255)
 );
 

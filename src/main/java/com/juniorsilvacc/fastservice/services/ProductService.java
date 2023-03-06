@@ -3,6 +3,9 @@ package com.juniorsilvacc.fastservice.services;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +30,16 @@ public class ProductService {
 		dto.add(linkTo(methodOn(ProductController.class).findById(id)).withSelfRel());
 		
 		return dto;
+	}
+
+	public List<ProductDTO> findAll() {
+		var products = repository.findAll();
+		
+		var list = products.stream().map(ProductDTO::new).collect(Collectors.toList());
+		
+		list.stream().forEach(p -> p.add(linkTo(methodOn(ProductController.class).findById(p.getId())).withSelfRel()));
+
+		return list;
 	}
 
 }
