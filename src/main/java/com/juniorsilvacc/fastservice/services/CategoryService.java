@@ -47,10 +47,6 @@ public class CategoryService {
 	}
 
 	public CategoryDTO create(Category category) {
-		if(category.getName() == null) {
-			throw new MethodArgumentNotValidException("O nome da categoria precisa está preenchido");
-		}
-		
 		Optional<Category> entity = repository.findByName(category.getName());
 		
 		if(entity.isPresent()) {

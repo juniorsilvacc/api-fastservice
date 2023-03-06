@@ -4,6 +4,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import com.juniorsilvacc.fastservice.controllers.ProductController;
 import com.juniorsilvacc.fastservice.domain.Product;
 import com.juniorsilvacc.fastservice.dto.ProductDTO;
 import com.juniorsilvacc.fastservice.repositories.ProductRepository;
+import com.juniorsilvacc.fastservice.services.exceptions.MethodArgumentNotValidException;
 import com.juniorsilvacc.fastservice.services.exceptions.ResourceNotFoundException;
 
 @Service
@@ -40,6 +42,20 @@ public class ProductService {
 		list.stream().forEach(p -> p.add(linkTo(methodOn(ProductController.class).findById(p.getId())).withSelfRel()));
 
 		return list;
+	}
+
+	public ProductDTO create(Product product) {
+		Optional<Product> entity = repository.findByName(product.getName());
+		
+		if(entity.isPresent()) {
+			throw new MethodArgumentNotValidException("Esse produto já existe");
+		}
+		
+		Product newProduct = repository.save(product);
+		
+		ProductDTO dto = new ProductDTO(newProduct);
+		
+		return dto;
 	}
 
 }

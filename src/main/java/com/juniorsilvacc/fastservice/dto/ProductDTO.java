@@ -18,13 +18,13 @@ public class ProductDTO extends RepresentationModel<ProductDTO> implements Seria
 	private Integer key;
 	private String name;
 	private String description;
-	private double price;
+	private Double price;
 	private String image;
 	
 	public ProductDTO() {
 	}
 	
-	public ProductDTO(Integer key, String name, String description, double price, String image) {
+	public ProductDTO(Integer key, String name, String description, Double price, String image) {
 		this.key = key;
 		this.name = name;
 		this.description = description;
@@ -64,11 +64,11 @@ public class ProductDTO extends RepresentationModel<ProductDTO> implements Seria
 		this.description = description;
 	}
 
-	public double getPrice() {
+	public Double getPrice() {
 		return price;
 	}
 
-	public void setPrice(double price) {
+	public void setPrice(Double price) {
 		this.price = price;
 	}
 

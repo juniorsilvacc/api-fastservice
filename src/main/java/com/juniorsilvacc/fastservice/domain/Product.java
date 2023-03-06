@@ -21,13 +21,13 @@ public class Product implements Serializable{
 	
 	private String name;
 	private String description;
-	private double price;
+	private Double price;
 	private String image;
 	
 	public Product() {
 	}
 	
-	public Product(Integer id, String name, String description, double price, String image) {
+	public Product(Integer id, String name, String description, Double price, String image) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
@@ -59,11 +59,11 @@ public class Product implements Serializable{
 		this.description = description;
 	}
 
-	public double getPrice() {
+	public Double getPrice() {
 		return price;
 	}
 
-	public void setPrice(double price) {
+	public void setPrice(Double price) {
 		this.price = price;
 	}
 
