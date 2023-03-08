@@ -12,8 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.juniorsilvacc.fastservice.controllers.CategoryController;
-import com.juniorsilvacc.fastservice.domain.Category;
-import com.juniorsilvacc.fastservice.dto.CategoryDTO;
+import com.juniorsilvacc.fastservice.domain.entities.Category;
+import com.juniorsilvacc.fastservice.domain.dtos.CategoryDTO;
 import com.juniorsilvacc.fastservice.repositories.CategoryRepository;
 import com.juniorsilvacc.fastservice.services.exceptions.MethodArgumentNotValidException;
 import com.juniorsilvacc.fastservice.services.exceptions.ResourceNotFoundException;

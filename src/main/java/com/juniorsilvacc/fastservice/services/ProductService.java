@@ -11,8 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.juniorsilvacc.fastservice.controllers.ProductController;
-import com.juniorsilvacc.fastservice.domain.Product;
-import com.juniorsilvacc.fastservice.dto.ProductDTO;
+import com.juniorsilvacc.fastservice.domain.entities.Product;
+import com.juniorsilvacc.fastservice.domain.dtos.ProductDTO;
 import com.juniorsilvacc.fastservice.repositories.ProductRepository;
 import com.juniorsilvacc.fastservice.services.exceptions.MethodArgumentNotValidException;
 import com.juniorsilvacc.fastservice.services.exceptions.ResourceNotFoundException;
@@ -56,6 +56,14 @@ public class ProductService {
 		ProductDTO dto = new ProductDTO(newProduct);
 		
 		return dto;
+	}
+
+	public void remove(Integer id) {
+		Product entity = repository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException(String.format("Produto com id: %d não encontrado", id)));
+		
+		repository.delete(entity);
+		
 	}
 
 }

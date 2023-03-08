@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.juniorsilvacc.fastservice.domain.Category;
-import com.juniorsilvacc.fastservice.dto.CategoryDTO;
+import com.juniorsilvacc.fastservice.domain.entities.Category;
+import com.juniorsilvacc.fastservice.domain.dtos.CategoryDTO;
 import com.juniorsilvacc.fastservice.services.CategoryService;
 
 @RestController

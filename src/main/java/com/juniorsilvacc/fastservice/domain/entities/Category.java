@@ -1,4 +1,4 @@
-package com.juniorsilvacc.fastservice.domain;
+package com.juniorsilvacc.fastservice.domain.entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;

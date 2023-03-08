@@ -1,11 +1,11 @@
-package com.juniorsilvacc.fastservice.domain;
+package com.juniorsilvacc.fastservice.domain.entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import com.juniorsilvacc.fastservice.dto.ProductDTO;
+import com.juniorsilvacc.fastservice.domain.dtos.ProductDTO;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

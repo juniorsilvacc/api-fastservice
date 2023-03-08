@@ -1,4 +1,4 @@
-package com.juniorsilvacc.fastservice.dto;
+package com.juniorsilvacc.fastservice.domain.dtos;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -6,7 +6,7 @@ import java.util.Objects;
 import org.springframework.hateoas.RepresentationModel;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.juniorsilvacc.fastservice.domain.Category;
+import com.juniorsilvacc.fastservice.domain.entities.Category;
 
 @JsonPropertyOrder({"id", "name", "description"})
 public class CategoryDTO extends RepresentationModel<CategoryDTO> implements Serializable {
