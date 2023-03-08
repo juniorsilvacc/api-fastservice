@@ -1,10 +1,10 @@
 package com.juniorsilvacc.fastservice.dto;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import org.springframework.hateoas.RepresentationModel;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.juniorsilvacc.fastservice.domain.Category;
 
@@ -13,32 +13,32 @@ public class CategoryDTO extends RepresentationModel<CategoryDTO> implements Ser
 
 	private static final long serialVersionUID = 1L; 
 	
-	@JsonProperty("id")
-	private Integer key;
+
+	private Integer id;
 	private String name;
 	private String description;
 	
 	public CategoryDTO() {
 	}
 
-	public CategoryDTO(Integer key, String name, String description) {
-		this.key = key;
+	public CategoryDTO(Integer id, String name, String description) {
+		this.id = id;
 		this.name = name;
 		this.description = description;
 	}
 
 	public CategoryDTO(Category obj) {
-		key = obj.getId();
+		id = obj.getId();
 		name = obj.getName();
 		description = obj.getDescription();
 	}
 
 	public Integer getId() {
-		return key;
+		return id;
 	}
 
-	public void setId(Integer key) {
-		this.key = key;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -55,6 +55,26 @@ public class CategoryDTO extends RepresentationModel<CategoryDTO> implements Ser
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(id);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		CategoryDTO other = (CategoryDTO) obj;
+		return Objects.equals(id, other.id);
 	}
 	
 }

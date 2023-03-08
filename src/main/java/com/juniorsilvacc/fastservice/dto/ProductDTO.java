@@ -1,51 +1,56 @@
 package com.juniorsilvacc.fastservice.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import org.springframework.hateoas.RepresentationModel;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.juniorsilvacc.fastservice.domain.Category;
 import com.juniorsilvacc.fastservice.domain.Product;
 
-@JsonPropertyOrder({"id", "name", "description", "price", "image"})
+@JsonPropertyOrder({"id", "name", "description", "price", "image", "categories"})
 public class ProductDTO extends RepresentationModel<ProductDTO> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	@JsonProperty("id")
-	private Integer key;
+	private Integer id;
 	private String name;
 	private String description;
 	private Double price;
 	private String image;
 	
-	public ProductDTO() {
+	private List<Category> categories = new ArrayList<>();
+
+	public ProductDTO() { 
 	}
 	
-	public ProductDTO(Integer key, String name, String description, Double price, String image) {
-		this.key = key;
+	public ProductDTO(Integer id, String name, String description, Double price, String image, List<Category> categories) {
+		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.price = price;
 		this.image = image;
+		this.categories = categories;
 	}
-	
+
 	public ProductDTO(Product obj) {
-		this.key = obj.getId();
-		this.name = obj.getName();
-		this.description = obj.getDescription();
-		this.price = obj.getPrice();
-		this.image = obj.getImage();
+		id = obj.getId();
+		name = obj.getName();
+		description = obj.getDescription();
+		price = obj.getPrice();
+		image = obj.getImage();
+		categories = obj.getCategories();
 	}
 
 	public Integer getId() {
-		return key;
+		return id;
 	}
 
-	public void setId(Integer key) {
-		this.key = key;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -79,10 +84,18 @@ public class ProductDTO extends RepresentationModel<ProductDTO> implements Seria
 	public void setImage(String image) {
 		this.image = image;
 	}
+	
+	public List<Category> getCategories() {
+		return categories;
+	}
+
+	public void setCategories(List<Category> categories) {
+		this.categories = categories;
+	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(key);
+		return Objects.hash(id);
 	}
 
 	@Override
@@ -94,7 +107,7 @@ public class ProductDTO extends RepresentationModel<ProductDTO> implements Seria
 		if (getClass() != obj.getClass())
 			return false;
 		ProductDTO other = (ProductDTO) obj;
-		return Objects.equals(key, other.key);
+		return Objects.equals(id, other.id);
 	}
 	
 }

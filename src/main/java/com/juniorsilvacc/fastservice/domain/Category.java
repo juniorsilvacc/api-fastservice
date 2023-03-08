@@ -1,12 +1,17 @@
 package com.juniorsilvacc.fastservice.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -21,6 +26,10 @@ public class Category implements Serializable {
 	
 	private String name;
 	private String description;
+	
+	@JsonIgnore
+	@ManyToMany(mappedBy = "categories")
+	private List<Product> products = new ArrayList<>();
 	
 	public Category() {
 	}
@@ -53,6 +62,14 @@ public class Category implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public List<Product> getProducts() {
+		return products;
+	}
+
+	public void setProducts(List<Product> products) {
+		this.products = products;
 	}
 
 	@Override

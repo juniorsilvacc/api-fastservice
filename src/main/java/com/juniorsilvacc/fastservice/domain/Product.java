@@ -1,12 +1,19 @@
 package com.juniorsilvacc.fastservice.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+
+import com.juniorsilvacc.fastservice.dto.ProductDTO;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -24,15 +31,31 @@ public class Product implements Serializable{
 	private Double price;
 	private String image;
 	
+	@ManyToMany
+	@JoinTable(name = "product_category", 
+		joinColumns = @JoinColumn(name = "product_id"),
+		inverseJoinColumns = @JoinColumn(name = "category_id")
+	)
+	private List<Category> categories = new ArrayList<>();
+	
 	public Product() {
 	}
 	
 	public Product(Integer id, String name, String description, Double price, String image) {
+		super();
 		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.price = price;
 		this.image = image;
+	}
+	
+	public Product(ProductDTO obj) {
+		id = obj.getId();
+		name = obj.getName();
+		description = obj.getDescription();
+		price = obj.getPrice();
+		image = obj.getImage();
 	}
 
 	public Integer getId() {
@@ -73,6 +96,14 @@ public class Product implements Serializable{
 
 	public void setImage(String image) {
 		this.image = image;
+	}
+	
+	public List<Category> getCategories() {
+		return categories;
+	}
+
+	public void setCategories(List<Category> categories) {
+		this.categories = categories;
 	}
 
 	@Override
