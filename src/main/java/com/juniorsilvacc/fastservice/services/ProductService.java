@@ -7,12 +7,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.juniorsilvacc.fastservice.controllers.ProductController;
-import com.juniorsilvacc.fastservice.domain.entities.Product;
 import com.juniorsilvacc.fastservice.domain.dtos.ProductDTO;
+import com.juniorsilvacc.fastservice.domain.entities.Product;
 import com.juniorsilvacc.fastservice.repositories.ProductRepository;
 import com.juniorsilvacc.fastservice.services.exceptions.MethodArgumentNotValidException;
 import com.juniorsilvacc.fastservice.services.exceptions.ResourceNotFoundException;
@@ -64,6 +65,30 @@ public class ProductService {
 		
 		repository.delete(entity);
 		
+	}
+
+	public ProductDTO update(Product product, Integer id) {
+		Optional<Product> oldEntity = repository.findById(id);
+		
+		if(!oldEntity.isPresent()) {
+			throw new ResourceNotFoundException(
+					String.format("Produto com id: %d não encontrado", id));
+		}
+		
+		Optional<Product> productExit = repository.findByName(product.getName());
+		
+		//Se o nome existe EE o nome que está no banco de dados é diferente do que está sendo enviado
+		if(productExit.isPresent() && productExit.get().getName() != oldEntity.get().getName()) {
+			throw new MethodArgumentNotValidException("O nome desse produto já existe no sistema");
+		}
+		
+		BeanUtils.copyProperties(product, oldEntity.get(), "id");
+		
+		var updatedEntity = repository.save(oldEntity.get());
+		
+		ProductDTO dto = new ProductDTO(updatedEntity);
+		
+		return dto;
 	}
 
 }

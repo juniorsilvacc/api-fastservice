@@ -76,6 +76,12 @@ public class CategoryService {
 					String.format("Categoria com id: %d não encontrado", id));
 		}
 		
+		Optional<Category> categoryExit = repository.findByName(category.getName());
+		
+		if(categoryExit.isPresent() && categoryExit.get().getName() != oldEntity.get().getName()) {
+			throw new MethodArgumentNotValidException("O nome dessa categoria já existe no sistema");
+		}
+		
 		BeanUtils.copyProperties(category, oldEntity.get(), "id");
 		
 		var updatedEntity = repository.save(oldEntity.get());
