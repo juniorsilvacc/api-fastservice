@@ -1,51 +1,44 @@
-package com.juniorsilvacc.fastservice.domain.entities;
+package com.juniorsilvacc.fastservice.domain.dtos;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.hateoas.RepresentationModel;
+
+import com.juniorsilvacc.fastservice.domain.entities.Order;
 import com.juniorsilvacc.fastservice.domain.enums.Status;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-
-@Entity
-@Table(name = "tb_order")
-public class Order implements Serializable{
+public class OrderDTO extends RepresentationModel<OrderDTO> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
 	private String name;
-	
-	@Column(name = "position")
 	private int table;
-	
 	private boolean draft = false;
-	
-	@JsonFormat(pattern="dd/MM/yyyy HH:mm")
+	private Status status;
 	private Date moment;
 	
-	private Integer status;
-	
-	public Order() {
+	public OrderDTO() {
 	}
 	
-	public Order(Integer id, String name, int table, boolean draft, Date moment, Status status) {
+	public OrderDTO(Integer id, String name, int table, boolean draft, Date moment, Status status) {
 		this.id = id;
 		this.name = name;
 		this.table = table;
 		this.draft = draft;
 		this.moment = moment;
-		setStatus(status);
+		this.status = status;
+	}
+	
+	public OrderDTO(Order obj) {
+		id = obj.getId();
+		name = obj.getName();
+		table = obj.getTable();
+		draft = obj.getDraft();
+		moment = obj.getMoment();
+		status = obj.getStatus();
 	}
 
 	public Integer getId() {
@@ -72,7 +65,7 @@ public class Order implements Serializable{
 		this.table = table;
 	}
 
-	public boolean getDraft() {
+	public boolean isDraft() {
 		return draft;
 	}
 
@@ -89,13 +82,11 @@ public class Order implements Serializable{
 	}
 
 	public Status getStatus() {
-		return Status.valueOf(status);
+		return status;
 	}
 
 	public void setStatus(Status status) {
-		if(status != null) {
-			this.status = status.getCode();
-		}
+		this.status = status;
 	}
 
 	@Override
@@ -111,7 +102,7 @@ public class Order implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Order other = (Order) obj;
+		OrderDTO other = (OrderDTO) obj;
 		return Objects.equals(id, other.id);
 	}
 	
