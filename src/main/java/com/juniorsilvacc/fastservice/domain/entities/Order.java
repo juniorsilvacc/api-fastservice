@@ -1,7 +1,7 @@
 package com.juniorsilvacc.fastservice.domain.entities;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.Instant;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -29,17 +29,17 @@ public class Order implements Serializable{
 	@Column(name = "position")
 	private int table;
 	
-	private boolean draft = false;
+	private boolean draft = true;
 	
-	@JsonFormat(pattern="dd/MM/yyyy HH:mm")
-	private Date moment;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
+	private Instant moment;
 	
 	private Integer status;
 	
 	public Order() {
 	}
 	
-	public Order(Integer id, String name, int table, boolean draft, Date moment, Status status) {
+	public Order(Integer id, String name, int table, boolean draft, Instant moment, Status status) {
 		this.id = id;
 		this.name = name;
 		this.table = table;
@@ -80,11 +80,11 @@ public class Order implements Serializable{
 		this.draft = draft;
 	}
 
-	public Date getMoment() {
+	public Instant getMoment() {
 		return moment;
 	}
 
-	public void setMoment(Date moment) {
+	public void setMoment(Instant moment) {
 		this.moment = moment;
 	}
 
