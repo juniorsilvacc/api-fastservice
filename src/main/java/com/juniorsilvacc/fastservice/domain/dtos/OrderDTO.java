@@ -1,7 +1,7 @@
 package com.juniorsilvacc.fastservice.domain.dtos;
 
 import java.io.Serializable;
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.Objects;
 
 import org.springframework.hateoas.RepresentationModel;
@@ -18,12 +18,12 @@ public class OrderDTO extends RepresentationModel<OrderDTO> implements Serializa
 	private int table;
 	private boolean draft = false;
 	private Status status;
-	private Instant moment;
+	private OffsetDateTime moment;
 	
 	public OrderDTO() {
 	}
 	
-	public OrderDTO(Integer id, String name, int table, boolean draft, Instant moment, Status status) {
+	public OrderDTO(Integer id, String name, int table, boolean draft, OffsetDateTime moment, Status status) {
 		this.id = id;
 		this.name = name;
 		this.table = table;
@@ -73,11 +73,11 @@ public class OrderDTO extends RepresentationModel<OrderDTO> implements Serializa
 		this.draft = draft;
 	}
 
-	public Instant getMoment() {
+	public OffsetDateTime getMoment() {
 		return moment;
 	}
 
-	public void setMoment(Instant moment) {
+	public void setMoment(OffsetDateTime moment) {
 		this.moment = moment;
 	}
 

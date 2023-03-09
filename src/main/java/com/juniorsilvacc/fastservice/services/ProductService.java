@@ -26,7 +26,8 @@ public class ProductService {
 
 	public ProductDTO findById(Integer id) {
 		Product entity = repository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException(String.format("Produto com id: %d não encontrado", id)));
+				.orElseThrow(() -> new ResourceNotFoundException(
+						String.format("Produto com id: %d não encontrado", id)));
 		
 		ProductDTO dto = new ProductDTO(entity);
 		
@@ -61,7 +62,8 @@ public class ProductService {
 
 	public void remove(Integer id) {
 		Product entity = repository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException(String.format("Produto com id: %d não encontrado", id)));
+				.orElseThrow(() -> new ResourceNotFoundException(
+						String.format("Produto com id: %d não encontrado", id)));
 		
 		repository.delete(entity);
 		

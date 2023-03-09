@@ -1,10 +1,11 @@
 package com.juniorsilvacc.fastservice.domain.entities;
 
 import java.io.Serializable;
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.juniorsilvacc.fastservice.domain.enums.Status;
 
 import jakarta.persistence.Column;
@@ -31,15 +32,15 @@ public class Order implements Serializable{
 	
 	private boolean draft = true;
 	
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
-	private Instant moment;
+	@JsonProperty(access = Access.READ_ONLY)
+	private OffsetDateTime moment;
 	
 	private Integer status;
 	
 	public Order() {
 	}
 	
-	public Order(Integer id, String name, int table, boolean draft, Instant moment, Status status) {
+	public Order(Integer id, String name, int table, boolean draft, OffsetDateTime moment, Status status) {
 		this.id = id;
 		this.name = name;
 		this.table = table;
@@ -80,11 +81,11 @@ public class Order implements Serializable{
 		this.draft = draft;
 	}
 
-	public Instant getMoment() {
+	public OffsetDateTime getMoment() {
 		return moment;
 	}
 
-	public void setMoment(Instant moment) {
+	public void setMoment(OffsetDateTime moment) {
 		this.moment = moment;
 	}
 

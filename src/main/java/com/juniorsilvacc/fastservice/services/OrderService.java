@@ -3,7 +3,7 @@ package com.juniorsilvacc.fastservice.services;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,7 +27,8 @@ public class OrderService {
 	
 	public OrderDTO findById(Integer id) {
 		Order entity = repository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException(String.format("Pedido com id: %d não encontrado", id)));
+				.orElseThrow(() -> new ResourceNotFoundException(
+						String.format("Pedido com id: %d não encontrado", id)));
 		
 		OrderDTO dto = new OrderDTO(entity);
 		
@@ -50,17 +51,25 @@ public class OrderService {
 		Optional<Order> entity = repository.findByTable(order.getTable());
 		
 		if(entity.isPresent()) {
-			throw new MethodArgumentNotValidException(String.format("A mesa %d já está em uso", order.getTable()));
+			throw new MethodArgumentNotValidException(
+					String.format("A mesa %d já está em uso", order.getTable()));
 		}
 		
 		order.setStatus(Status.PENDING);
-		order.setMoment(Instant.now());
+		order.setMoment(OffsetDateTime.now());
 		order.setDraft(true);
 		Order newOrder = repository.save(order);
 		
 		OrderDTO dto = new OrderDTO(newOrder);
 		
 		return dto;
+	}
+
+	public void closeOrder(Integer id) {
+		Order order = repository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Pedido não encontrado"));
+		
+		repository.delete(order);
 	}
 
 
