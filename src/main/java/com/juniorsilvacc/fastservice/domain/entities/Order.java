@@ -2,6 +2,8 @@ package com.juniorsilvacc.fastservice.domain.entities;
 
 import java.io.Serializable;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -13,6 +15,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -36,6 +39,9 @@ public class Order implements Serializable{
 	private OffsetDateTime moment;
 	
 	private Integer status;
+	
+	@OneToMany(mappedBy = "id.order")
+	private List<ItemOrder> items = new ArrayList<>();
 	
 	public Order() {
 	}
@@ -97,6 +103,10 @@ public class Order implements Serializable{
 		if(status != null) {
 			this.status = status.getCode();
 		}
+	}
+
+	public List<ItemOrder> getItems() {
+		return items;
 	}
 
 	@Override

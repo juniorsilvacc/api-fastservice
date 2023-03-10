@@ -7,3 +7,8 @@ CREATE TABLE tb_item_order (
 	CONSTRAINT fk_product_id FOREIGN KEY (product_id) REFERENCES tb_product (id),
  	CONSTRAINT fk_order_id FOREIGN KEY (order_id) REFERENCES tb_order (id)
 );
+
+INSERT INTO tb_item_order (order_id, product_id, amount) VALUES (1, 2, 1);
+INSERT INTO tb_item_order (order_id, product_id, amount) VALUES (1, 1, 2);
+INSERT INTO tb_item_order (order_id, product_id, amount) VALUES (1, 3, 3);
+INSERT INTO tb_item_order (order_id, product_id, amount) VALUES (2, 2, 1);

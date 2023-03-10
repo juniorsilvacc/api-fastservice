@@ -3,6 +3,7 @@ package com.juniorsilvacc.fastservice.domain.entities.pk;
 import java.io.Serializable;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.juniorsilvacc.fastservice.domain.entities.Order;
 import com.juniorsilvacc.fastservice.domain.entities.Product;
 
@@ -23,15 +24,19 @@ public class ItemOrderPK implements Serializable {
 	@JoinColumn(name = "product_id")
 	private Product product;
 	
+	@JsonIgnore
 	public Order getOrder() {
 		return order;
 	}
+	
 	public void setOrder(Order order) {
 		this.order = order;
 	}
+	
 	public Product getProduct() {
 		return product;
 	}
+	
 	public void setProduct(Product product) {
 		this.product = product;
 	}

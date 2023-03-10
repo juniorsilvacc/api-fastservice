@@ -3,6 +3,7 @@ package com.juniorsilvacc.fastservice.domain.entities;
 import java.io.Serializable;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.juniorsilvacc.fastservice.domain.entities.pk.ItemOrderPK;
 
 import jakarta.persistence.EmbeddedId;
@@ -16,20 +17,21 @@ public class ItemOrder implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@EmbeddedId
-	private ItemOrderPK id;
+	private ItemOrderPK id = new ItemOrderPK();
 	
-	private Integer amount;
+	private int amount;
 	
 	public ItemOrder() {
 		
 	}
 	
-	public ItemOrder(Order order, Product product, Integer amount) {
+	public ItemOrder(Order order, Product product, int amount) {
 		id.setOrder(order);
 		id.setProduct(product);
 		this.amount = amount;
 	}
 	
+	@JsonIgnore
 	public Order getOrder () {
 		return id.getOrder();
 	}
@@ -46,11 +48,11 @@ public class ItemOrder implements Serializable {
 		id.setProduct(product);
 	}
 
-	public Integer getAmount() {
+	public int getAmount() {
 		return amount;
 	}
 
-	public void setAmount(Integer amount) {
+	public void setAmount(int amount) {
 		this.amount = amount;
 	}
 
