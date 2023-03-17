@@ -18,17 +18,17 @@ public class OrderDTO extends RepresentationModel<OrderDTO> implements Serializa
 	
 	private Integer id;
 	private String name;
-	private int table;
-	private boolean draft = false;
+	private Integer table;
+	private Boolean draft = false;
 	private Status status;
 	private OffsetDateTime moment;
 	
 	private List<ItemOrder> items = new ArrayList<>();
 	
 	public OrderDTO() {
-	}
+	} 
 	
-	public OrderDTO(Integer id, String name, int table, boolean draft, OffsetDateTime moment, Status status, List<ItemOrder> items) {
+	public OrderDTO(Integer id, String name, Integer table, Boolean draft, OffsetDateTime moment, Status status, List<ItemOrder> items) {
 		this.id = id;
 		this.name = name;
 		this.table = table;
@@ -64,19 +64,19 @@ public class OrderDTO extends RepresentationModel<OrderDTO> implements Serializa
 		this.name = name;
 	}
 
-	public int getTable() {
+	public Integer getTable() {
 		return table;
 	}
 
-	public void setTable(int table) {
+	public void setTable(Integer table) {
 		this.table = table;
 	}
 
-	public boolean isDraft() {
+	public Boolean isDraft() {
 		return draft;
 	}
 
-	public void setDraft(boolean draft) {
+	public void setDraft(Boolean draft) {
 		this.draft = draft;
 	}
 

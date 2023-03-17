@@ -1,14 +1,15 @@
 CREATE TABLE tb_item_order (
-	order_id SERIAL NOT NULL,
-	product_id SERIAL NOT NULL,
+	id SERIAL PRIMARY KEY,
 	amount INTEGER NOT NULL,
-	PRIMARY KEY (order_id, product_id),
+	order_id INTEGER NOT NULL,
+	product_id INTEGER NOT NULL,
+	 
 	
-	CONSTRAINT fk_product_id FOREIGN KEY (product_id) REFERENCES tb_product (id),
- 	CONSTRAINT fk_order_id FOREIGN KEY (order_id) REFERENCES tb_order (id)
+	FOREIGN KEY (product_id) REFERENCES tb_product (id),
+ 	FOREIGN KEY (order_id) REFERENCES tb_order (id)
 );
 
-INSERT INTO tb_item_order (order_id, product_id, amount) VALUES (1, 2, 1);
-INSERT INTO tb_item_order (order_id, product_id, amount) VALUES (1, 1, 2);
-INSERT INTO tb_item_order (order_id, product_id, amount) VALUES (1, 3, 3);
-INSERT INTO tb_item_order (order_id, product_id, amount) VALUES (2, 2, 1);
+INSERT INTO tb_item_order (amount, order_id, product_id) VALUES (1, 1, 1);
+INSERT INTO tb_item_order (amount, order_id, product_id) VALUES (2, 1, 3);
+INSERT INTO tb_item_order (amount, order_id, product_id) VALUES (1, 2, 1);
+INSERT INTO tb_item_order (amount, order_id, product_id) VALUES (1, 2, 3);

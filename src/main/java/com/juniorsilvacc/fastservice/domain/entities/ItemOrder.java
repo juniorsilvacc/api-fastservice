@@ -3,57 +3,74 @@ package com.juniorsilvacc.fastservice.domain.entities;
 import java.io.Serializable;
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.juniorsilvacc.fastservice.domain.entities.pk.ItemOrderPK;
-
-import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tb_item_order")
 public class ItemOrder implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
 	
-	@EmbeddedId
-	private ItemOrderPK id = new ItemOrderPK();
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 	
-	private int amount;
+	private Integer amount;
+	
+	@ManyToOne
+	@JoinColumn(name = "order_id")
+	private Order order;
+	
+	@ManyToOne
+	@JoinColumn(name = "product_id")
+	private Product product;
 	
 	public ItemOrder() {
-		
-	}
-	
-	public ItemOrder(Order order, Product product, int amount) {
-		id.setOrder(order);
-		id.setProduct(product);
-		this.amount = amount;
-	}
-	
-	@JsonIgnore
-	public Order getOrder () {
-		return id.getOrder();
-	}
-	
-	public void setOrder (Order order) {
-		id.setOrder(order);
-	}
-	
-	public Product getProduct() {
-		return id.getProduct();
-	}
-	
-	public void setProduct(Product product) {
-		id.setProduct(product);
 	}
 
-	public int getAmount() {
+	public ItemOrder(Integer id, Integer amount, Order order, Product product) {
+		this.id = id;
+		this.amount = amount;
+		this.order = order;
+		this.product = product;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Integer getAmount() {
 		return amount;
 	}
 
-	public void setAmount(int amount) {
+	public void setAmount(Integer amount) {
 		this.amount = amount;
+	}
+
+	public Order getOrder() {
+		return order;
+	}
+
+	public void setOrder(Order order) {
+		this.order = order;
+	}
+
+	public Product getProduct() {
+		return product;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
 	}
 
 	@Override
@@ -72,5 +89,5 @@ public class ItemOrder implements Serializable {
 		ItemOrder other = (ItemOrder) obj;
 		return Objects.equals(id, other.id);
 	}
-	
+
 }

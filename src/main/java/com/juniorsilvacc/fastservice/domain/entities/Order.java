@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.juniorsilvacc.fastservice.domain.enums.Status;
@@ -31,22 +32,23 @@ public class Order implements Serializable{
 	private String name;
 	
 	@Column(name = "position")
-	private int table;
+	private Integer table;
 	
-	private boolean draft = true;
+	private Boolean draft = true;
 	
 	@JsonProperty(access = Access.READ_ONLY)
 	private OffsetDateTime moment;
 	
 	private Integer status;
 	
-	@OneToMany(mappedBy = "id.order")
+	@JsonIgnore
+	@OneToMany(mappedBy = "order")
 	private List<ItemOrder> items = new ArrayList<>();
 	
 	public Order() {
 	}
 	
-	public Order(Integer id, String name, int table, boolean draft, OffsetDateTime moment, Status status) {
+	public Order(Integer id, String name, Integer table, Boolean draft, OffsetDateTime moment, Status status) {
 		this.id = id;
 		this.name = name;
 		this.table = table;
@@ -54,7 +56,7 @@ public class Order implements Serializable{
 		this.moment = moment;
 		setStatus(status);
 	}
-
+	
 	public Integer getId() {
 		return id;
 	}
@@ -71,19 +73,19 @@ public class Order implements Serializable{
 		this.name = name;
 	}
 
-	public int getTable() {
+	public Integer getTable() {
 		return table;
 	}
 
-	public void setTable(int table) {
+	public void setTable(Integer table) {
 		this.table = table;
 	}
 
-	public boolean getDraft() {
+	public Boolean getDraft() {
 		return draft;
 	}
 
-	public void setDraft(boolean draft) {
+	public void setDraft(Boolean draft) {
 		this.draft = draft;
 	}
 
@@ -98,15 +100,19 @@ public class Order implements Serializable{
 	public Status getStatus() {
 		return Status.valueOf(status);
 	}
-
+	
 	public void setStatus(Status status) {
 		if(status != null) {
 			this.status = status.getCode();
 		}
 	}
-
+	
 	public List<ItemOrder> getItems() {
 		return items;
+	}
+
+	public void setItems(List<ItemOrder> items) {
+		this.items = items;
 	}
 
 	@Override
