@@ -88,5 +88,17 @@ public class OrderService {
 		
 	}
 
-
+	public OrderDTO conclude(Integer id) {
+		Order order = repository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException(
+						String.format("Pedido com id: %d não encontrado", id)));
+		
+		order.setStatus(Status.FINISHED);
+		
+		Order send = repository.save(order);
+		
+		OrderDTO dto = new OrderDTO(send);
+		
+		return dto;
+	}
 }

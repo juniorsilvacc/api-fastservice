@@ -51,5 +51,10 @@ public class OrderController {
 	public OrderDTO sendOrder(@PathVariable Integer id) {
 		return service.send(id);
 	}
+	
+	@PutMapping(value = "/conclude/{id}")
+	public OrderDTO concludeOrder(@PathVariable Integer id) {
+		return service.conclude(id);
+	}
 
 }
