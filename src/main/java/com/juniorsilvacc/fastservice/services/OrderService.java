@@ -72,5 +72,21 @@ public class OrderService {
 		repository.delete(order);
 	}
 
+	public OrderDTO send(Integer id) {
+		Order order = repository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException(
+						String.format("Pedido com id: %d não encontrado", id)));
+		
+		order.setDraft(false);
+		order.setStatus(Status.SENT);
+		
+		Order send = repository.save(order);
+		
+		OrderDTO dto = new OrderDTO(send);
+		
+		return dto;
+		
+	}
+
 
 }

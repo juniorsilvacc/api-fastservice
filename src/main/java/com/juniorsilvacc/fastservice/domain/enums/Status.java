@@ -3,7 +3,8 @@ package com.juniorsilvacc.fastservice.domain.enums;
 public enum Status {
 	
 	PENDING(1),
-	FINISHED(2);
+	SENT(2),
+	FINISHED(3);
 	
 	private int code;
 

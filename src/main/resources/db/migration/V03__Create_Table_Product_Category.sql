@@ -3,6 +3,6 @@ CREATE TABLE tb_product_category (
   category_id SERIAL NOT NULL,
   PRIMARY KEY (product_id, category_id),
   
-  CONSTRAINT fk_product_id FOREIGN KEY (product_id) REFERENCES tb_product (id),
-  CONSTRAINT fk_category_id FOREIGN KEY (category_id) REFERENCES tb_category (id)
+  FOREIGN KEY (product_id) REFERENCES tb_product (id),
+  FOREIGN KEY (category_id) REFERENCES tb_category (id)
 );
