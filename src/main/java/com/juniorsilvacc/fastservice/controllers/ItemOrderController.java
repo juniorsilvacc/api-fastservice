@@ -2,6 +2,8 @@ package com.juniorsilvacc.fastservice.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +25,12 @@ public class ItemOrderController {
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public ItemOrderDTO create(@RequestBody ItemOrder itemOrder) {
 		return service.create(itemOrder);
+	}
+	
+	@DeleteMapping(value = "/remove/{id}")
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
+	public void remove(@PathVariable Integer id) {
+		service.remove(id);
 	}
 	
 }

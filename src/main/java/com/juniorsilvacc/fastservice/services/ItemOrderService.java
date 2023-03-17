@@ -43,5 +43,15 @@ public class ItemOrderService {
 		
 		return dto;
 	}
+
+	public void remove(Integer id) {
+		Optional<ItemOrder> item = repository.findById(id);
+		
+		if(!item.isPresent()) {
+			throw new ResourceNotFoundException(String.format("Item com id: %d não encontrado", id));
+		}
+		
+		repository.deleteById(id);
+	}
 	
 }
