@@ -40,6 +40,10 @@ public class ItemOrder implements Serializable {
 		this.order = order;
 		this.product = product;
 	}
+	
+	public Double getSubTotal() {
+		return product.getPrice() * amount;
+	}
 
 	public Integer getId() {
 		return id;
