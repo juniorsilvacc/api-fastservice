@@ -1,0 +1,1 @@
+INSERT INTO tb_permission (description) VALUES ('MANAGER'), ('WAITER'), ('COMMON_USER');
