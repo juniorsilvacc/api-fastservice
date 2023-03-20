@@ -1,4 +1,4 @@
-package com.juniorsilvacc.fastservice.securityJwt;
+package com.juniorsilvacc.fastservice.security;
 
 import java.util.Base64;
 import java.util.Date;
@@ -18,6 +18,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.juniorsilvacc.fastservice.domain.dtos.security.TokenDTO;
+import com.juniorsilvacc.fastservice.services.exceptions.InvalidJwtAuthenticationException;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
@@ -102,5 +103,17 @@ public class JwtTokenProvider {
 			return bearerToken.substring("Bearer ".length());
 		}
 		return null;
+	}
+	
+	public boolean validateToken(String token) {
+		DecodedJWT decodedJWT = decodedToken(token);
+		try {
+			if (decodedJWT.getExpiresAt().before(new Date())) {
+				return false;
+			}
+			return true;
+		} catch (Exception e) {
+			throw new InvalidJwtAuthenticationException("Expired or invalid JWT token!");
+		}
 	}
 }
