@@ -53,5 +53,20 @@ public class AuthService {
 			throw new BadCredentialsException("Invalid e-mail/password suppliend");
 		}
 	}
-
+	
+	public ResponseEntity<?> refreshToken(String email, String refreshToken) {
+			var user = repository.findByUserEmail(email);
+			
+			var tokenResponse = new TokenDTO();
+			
+			if(user != null) {
+				tokenResponse = tokenProvider.refreshToken(refreshToken);
+			} else {
+				throw new UsernameNotFoundException("E-mail " + email + " not found");
+			}
+			
+			return ResponseEntity.ok(tokenResponse);
+			
+		}
+	
 }

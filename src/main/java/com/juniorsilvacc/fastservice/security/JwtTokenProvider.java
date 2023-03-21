@@ -26,7 +26,7 @@ import jakarta.servlet.http.HttpServletRequest;
 @Service
 public class JwtTokenProvider {
 	
-	@Value("${jwt.secret=secret:secret}")
+	@Value("${jwt.secret:secret}")
 	private String secretKey = "secret";
 	
 	@Value("${jwt.expiration:3600000}")
@@ -50,6 +50,22 @@ public class JwtTokenProvider {
 		var refreshToken = getRefreshToken(email, roles, now);
 		
 		return new TokenDTO(email, true, now, validity, accessToken, refreshToken);
+	}
+	
+	public TokenDTO	refreshToken (String refreshToken) {
+//		if(refreshToken.contains("Bearer ")) {
+//			refreshToken.substring("Bearer ".length());
+//		}
+		if (refreshToken.contains("Bearer ")) refreshToken =
+				refreshToken.substring("Bearer ".length());
+		
+		JWTVerifier verifier = JWT.require(algorithm).build();
+		DecodedJWT decodedJWT = verifier.verify(refreshToken);
+		
+		String email = decodedJWT.getSubject();
+		List<String> roles = decodedJWT.getClaim("roles").asList(String.class);
+		
+		return createAccessToken(email, roles);
 	}
 	
 	private String getAccessToken(String email, List<String> roles, Date now, Date validity) {
