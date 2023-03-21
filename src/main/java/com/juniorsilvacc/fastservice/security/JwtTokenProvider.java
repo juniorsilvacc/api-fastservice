@@ -26,10 +26,10 @@ import jakarta.servlet.http.HttpServletRequest;
 @Service
 public class JwtTokenProvider {
 	
-	@Value("${jwt.secret=secret}")
+	@Value("${jwt.secret=secret:secret}")
 	private String secretKey = "secret";
 	
-	@Value("${jwt.expiration=3600000}")
+	@Value("${jwt.expiration:3600000}")
 	private long validatyInMilliSeconds = 3600000; // 1h
 	
 	@Autowired

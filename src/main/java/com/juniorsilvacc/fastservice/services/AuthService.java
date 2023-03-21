@@ -35,7 +35,7 @@ public class AuthService {
 					new UsernamePasswordAuthenticationToken(email, password));
 			
 			// Acessa o repositório e busca pelo email autenticado
-			var user = repository.findByUseremail(email);
+			var user = repository.findByUserEmail(email);
 			
 			var tokenResponse = new TokenDTO();
 			

@@ -3,7 +3,6 @@ package com.juniorsilvacc.fastservice.domain.entities;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -53,9 +52,6 @@ public class User implements UserDetails, Serializable{
 	private Boolean credentialsNonExpired;
 	
 	private Boolean enabled;
-	
-	@Column(name = "created_at")
-	private Date createdAt;
 	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "tb_user_permission", joinColumns = {@JoinColumn (name = "id_user")},
@@ -180,14 +176,6 @@ public class User implements UserDetails, Serializable{
 
 	public void setEnabled(Boolean enabled) {
 		this.enabled = enabled;
-	}
-
-	public Date getCreatedAt() {
-		return createdAt;
-	}
-
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
 	}
 
 	public List<Permission> getPermissions() {
