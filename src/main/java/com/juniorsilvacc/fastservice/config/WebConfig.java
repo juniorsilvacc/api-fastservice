@@ -18,7 +18,6 @@ public class WebConfig  implements WebMvcConfigurer {
 		var allowedOrigins = corsOriginPatterns.split(",");
 		
 		registry.addMapping("/**")
-//			.allowedMethods("GET", "POST", "PUT")
 			.allowedMethods("*")
 			.allowedOrigins(allowedOrigins)
 			.allowCredentials(true);

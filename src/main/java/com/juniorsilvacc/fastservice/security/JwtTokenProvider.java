@@ -53,9 +53,6 @@ public class JwtTokenProvider {
 	}
 	
 	public TokenDTO	refreshToken (String refreshToken) {
-//		if(refreshToken.contains("Bearer ")) {
-//			refreshToken.substring("Bearer ".length());
-//		}
 		if (refreshToken.contains("Bearer ")) refreshToken =
 				refreshToken.substring("Bearer ".length());
 		

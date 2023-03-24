@@ -14,13 +14,19 @@ import org.springframework.web.bind.annotation.RestController;
 import com.juniorsilvacc.fastservice.domain.dtos.security.AccountCredentialsDTO;
 import com.juniorsilvacc.fastservice.services.AuthService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+
 @RestController
 @RequestMapping(value = "/auth")
+@Tag(name = "Authentication Endpoint")
 public class AuthController {
 	
 	@Autowired
 	private AuthService service;
 	
+	@Operation(summary = "Authenticates a user and returns a token")
 	@PostMapping(value = "/signin")
 	public ResponseEntity<?> signin(@RequestBody AccountCredentialsDTO data) {
 		if(checkIfParamsNotNull(data)) {
@@ -41,6 +47,7 @@ public class AuthController {
 				|| data.getPassword() == null || data.getPassword().isBlank();
 	}
 	
+	@Operation(summary = "Refresh token for Authenticated user and returns a token")
 	@PutMapping(value = "/refresh/{email}")
 	public ResponseEntity<?> refreshToken(@PathVariable("email") String email, @RequestHeader("Authorization") String refreshToken) {
 		if(checkIfParamsNotNull(email, refreshToken)) {
