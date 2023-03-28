@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.juniorsilvacc.fastservice.controllers.ProductController;
 import com.juniorsilvacc.fastservice.domain.dtos.ProductDTO;
@@ -17,6 +18,7 @@ import com.juniorsilvacc.fastservice.domain.entities.Product;
 import com.juniorsilvacc.fastservice.repositories.ProductRepository;
 import com.juniorsilvacc.fastservice.services.exceptions.MethodArgumentNotValidException;
 import com.juniorsilvacc.fastservice.services.exceptions.ResourceNotFoundException;
+import com.juniorsilvacc.fastservice.util.UploadUtil;
 
 @Service
 public class ProductService {
@@ -46,18 +48,23 @@ public class ProductService {
 		return list;
 	}
 
-	public ProductDTO create(Product product) {
+	public ProductDTO create(Product product, MultipartFile image) {
 		Optional<Product> entity = repository.findByName(product.getName());
 		
 		if(entity.isPresent()) {
 			throw new MethodArgumentNotValidException("Esse produto já existe");
 		}
-		
+			
+		if(UploadUtil.uploadImage(image)) {
+			product.setImage(image.getOriginalFilename());
+		}
+			
 		Product newProduct = repository.save(product);
-		
+			
 		ProductDTO dto = new ProductDTO(newProduct);
-		
+			
 		return dto;
+		
 	}
 
 	public void remove(Integer id) {
