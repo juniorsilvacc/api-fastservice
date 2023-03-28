@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -14,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.juniorsilvacc.fastservice.domain.entities.Category;
 import com.juniorsilvacc.fastservice.domain.dtos.CategoryDTO;
+import com.juniorsilvacc.fastservice.domain.entities.Category;
 import com.juniorsilvacc.fastservice.services.CategoryService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,6 +30,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RestController
 @RequestMapping(value = "/api/categories/v1")
 @Tag(name = "Category", description = "Endpoints for Managing Category")
+@EnableMethodSecurity(prePostEnabled = true)
 public class CategoryController {
 	
 	@Autowired
@@ -100,6 +103,7 @@ public class CategoryController {
 				@ApiResponse(description = "Internal Error", responseCode = "500", content = @Content)
 		}
 	)
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public CategoryDTO create(@RequestBody Category category) {
 		return service.create(category);
 	}
@@ -117,6 +121,7 @@ public class CategoryController {
 					@ApiResponse(description = "Internal Error", responseCode = "500", content = @Content)
 			}
 	)
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public void delete(@PathVariable Integer id) {
 		service.delete(id);
 	}
@@ -141,6 +146,7 @@ public class CategoryController {
 					@ApiResponse(description = "Internal Error", responseCode = "500", content = @Content)
 			}
 	)
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public CategoryDTO update(@PathVariable Integer id, @RequestBody Category category) {
 		return service.update(id, category);
 	}

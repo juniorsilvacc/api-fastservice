@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -30,6 +32,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RestController
 @RequestMapping(value = "/api/products/v1")
 @Tag(name = "Product", description = "Endpoints for Managing Product")
+@EnableMethodSecurity(prePostEnabled = true)
 public class ProductController {
 	
 	@Autowired
@@ -102,6 +105,7 @@ public class ProductController {
 					@ApiResponse(description = "Internal Error", responseCode = "500", content = @Content)
 			}
 	)
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ProductDTO create(@RequestBody Product product) {
 		return service.create(product);
 	}
@@ -119,6 +123,7 @@ public class ProductController {
 					@ApiResponse(description = "Internal Error", responseCode = "500", content = @Content)
 			}
 	)
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public void remove(@PathVariable Integer id) {
 		service.remove(id);
 	}
@@ -143,6 +148,7 @@ public class ProductController {
 					@ApiResponse(description = "Internal Error", responseCode = "500", content = @Content)
 			}
 	)
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ProductDTO update(@RequestBody Product product, @PathVariable Integer id) {
 		return service.update(product, id);
 	}
