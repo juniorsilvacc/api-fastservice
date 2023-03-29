@@ -9,6 +9,8 @@ import java.util.Objects;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.juniorsilvacc.fastservice.domain.dtos.UserDTO;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -43,15 +45,15 @@ public class User implements UserDetails, Serializable{
 	private String password;
 	
 	@Column(name = "account_non_expired")
-	private Boolean accountNonExpired;
+	private Boolean accountNonExpired = true;
 	
 	@Column(name = "account_non_locked")
-	private Boolean accountNonLocked;
+	private Boolean accountNonLocked = true;
 	
 	@Column(name = "credentials_non_expired")
-	private Boolean credentialsNonExpired;
+	private Boolean credentialsNonExpired = true;
 	
-	private Boolean enabled;
+	private Boolean enabled = true;
 	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "tb_user_permission", joinColumns = {@JoinColumn (name = "id_user")},
@@ -60,6 +62,16 @@ public class User implements UserDetails, Serializable{
 	private List<Permission> permissions;
 	
 	public User() {
+	}
+
+	public User(UserDTO obj) {
+		this.id = obj.getId();
+		this.user_name = obj.getUser_name();
+		this.email = obj.getEmail();
+		this.cpf = obj.getCpf();
+		this.avatar = obj.getAvatar();
+		this.password = obj.getPassword();
+		this.permissions = obj.getPermissions();
 	}
 
 	public List<String> getRoles() {
