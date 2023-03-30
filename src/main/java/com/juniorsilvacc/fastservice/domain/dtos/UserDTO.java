@@ -5,14 +5,13 @@ import java.util.List;
 import java.util.Objects;
 
 import com.juniorsilvacc.fastservice.domain.entities.Permission;
-import com.juniorsilvacc.fastservice.domain.entities.User;
 
 public class UserDTO implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
 	private Integer id;
-	private String user_name;
+	private String name;
 	private String email;
 	private String cpf;
 	private String avatar;
@@ -22,25 +21,15 @@ public class UserDTO implements Serializable{
 	public UserDTO() {
 	}
 	
-	public UserDTO(Integer id, String user_name, String email, String cpf, String avatar, String password,
+	public UserDTO(Integer id, String name, String email, String cpf, String avatar, String password,
 			List<Permission> permissions) {
 		this.id = id;
-		this.user_name = user_name;
+		this.name = name;
 		this.email = email;
 		this.cpf = cpf;
 		this.avatar = avatar;
 		this.password = password;
 		this.permissions = permissions;
-	}
-
-	public UserDTO(User obj) {
-		this.id = obj.getId();
-		this.user_name = obj.getUser_name();
-		this.email = obj.getEmail();
-		this.cpf = obj.getCpf();
-		this.avatar = obj.getAvatar();
-		this.password = obj.getPassword();
-		this.permissions = obj.getPermissions();
 	}
 
 	public Integer getId() {
@@ -51,12 +40,12 @@ public class UserDTO implements Serializable{
 		this.id = id;
 	}
 
-	public String getUser_name() {
-		return user_name;
+	public String getName() {
+		return name;
 	}
 
-	public void setUser_name(String user_name) {
-		this.user_name = user_name;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getEmail() {

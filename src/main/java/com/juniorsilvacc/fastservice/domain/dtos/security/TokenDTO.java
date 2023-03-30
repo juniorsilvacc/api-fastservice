@@ -13,19 +13,17 @@ public class TokenDTO implements Serializable {
 	private Date created;
 	private Date expiration;
 	private String accessToken;
-	private String refreshToken;
 	
 	public TokenDTO() {
 	}
 	
-	public TokenDTO(String email, Boolean authenticated, Date created, Date expiration, String accessToken,
-			String refreshToken) {
+	public TokenDTO(String email, Boolean authenticated, Date created, Date expiration, String accessToken) {
 		this.email = email;
 		this.authenticated = authenticated;
 		this.created = created;
 		this.expiration = expiration;
 		this.accessToken = accessToken;
-		this.refreshToken = refreshToken;
+		
 	}
 
 	public String getEmail() {
@@ -68,17 +66,9 @@ public class TokenDTO implements Serializable {
 		this.accessToken = accessToken;
 	}
 
-	public String getRefreshToken() {
-		return refreshToken;
-	}
-
-	public void setRefreshToken(String refreshToken) {
-		this.refreshToken = refreshToken;
-	}
-
 	@Override
 	public int hashCode() {
-		return Objects.hash(accessToken, authenticated, created, email, expiration, refreshToken);
+		return Objects.hash(accessToken, authenticated, created, email, expiration);
 	}
 
 	@Override
@@ -92,7 +82,7 @@ public class TokenDTO implements Serializable {
 		TokenDTO other = (TokenDTO) obj;
 		return Objects.equals(accessToken, other.accessToken) && Objects.equals(authenticated, other.authenticated)
 				&& Objects.equals(created, other.created) && Objects.equals(email, other.email)
-				&& Objects.equals(expiration, other.expiration) && Objects.equals(refreshToken, other.refreshToken);
+				&& Objects.equals(expiration, other.expiration);
 	}
-	
+
 }

@@ -9,8 +9,6 @@ import java.util.Objects;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.juniorsilvacc.fastservice.domain.dtos.UserDTO;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -32,7 +30,7 @@ public class User implements UserDetails, Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	private String user_name;
+	private String name;
 	
 	@Column(unique = true)
 	private String email;
@@ -44,17 +42,6 @@ public class User implements UserDetails, Serializable{
 	
 	private String password;
 	
-	@Column(name = "account_non_expired")
-	private Boolean accountNonExpired = true;
-	
-	@Column(name = "account_non_locked")
-	private Boolean accountNonLocked = true;
-	
-	@Column(name = "credentials_non_expired")
-	private Boolean credentialsNonExpired = true;
-	
-	private Boolean enabled = true;
-	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "tb_user_permission", joinColumns = {@JoinColumn (name = "id_user")},
 		inverseJoinColumns =  {@JoinColumn (name = "id_permission")}
@@ -62,16 +49,6 @@ public class User implements UserDetails, Serializable{
 	private List<Permission> permissions;
 	
 	public User() {
-	}
-
-	public User(UserDTO obj) {
-		this.id = obj.getId();
-		this.user_name = obj.getUser_name();
-		this.email = obj.getEmail();
-		this.cpf = obj.getCpf();
-		this.avatar = obj.getAvatar();
-		this.password = obj.getPassword();
-		this.permissions = obj.getPermissions();
 	}
 
 	public List<String> getRoles() {
@@ -95,27 +72,27 @@ public class User implements UserDetails, Serializable{
 	
 	@Override
 	public String getUsername() {
-		return this.user_name;
+		return this.name;
 	}
 	
 	@Override
 	public boolean isAccountNonExpired() {
-		return this.accountNonExpired;
+		return true;
 	}
 	
 	@Override
 	public boolean isAccountNonLocked() {
-		return this.accountNonLocked;
+		return true;
 	}
 	
 	@Override
 	public boolean isCredentialsNonExpired() {
-		return this.credentialsNonExpired;
+		return true;
 	}
 	
 	@Override
 	public boolean isEnabled() {
-		return this.enabled;
+		return true;
 	}
 
 	public Integer getId() {
@@ -126,12 +103,12 @@ public class User implements UserDetails, Serializable{
 		this.id = id;
 	}
 
-	public String getUser_name() {
-		return user_name;
+	public String getName() {
+		return name;
 	}
 
-	public void setUser_name(String user_name) {
-		this.user_name = user_name;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getEmail() {
@@ -156,38 +133,6 @@ public class User implements UserDetails, Serializable{
 
 	public void setAvatar(String avatar) {
 		this.avatar = avatar;
-	}
-
-	public Boolean getAccountNonExpired() {
-		return accountNonExpired;
-	}
-
-	public void setAccountNonExpired(Boolean accountNonExpired) {
-		this.accountNonExpired = accountNonExpired;
-	}
-
-	public Boolean getAccountNonLocked() {
-		return accountNonLocked;
-	}
-
-	public void setAccountNonLocked(Boolean accountNonLocked) {
-		this.accountNonLocked = accountNonLocked;
-	}
-
-	public Boolean getCredentialsNonExpired() {
-		return credentialsNonExpired;
-	}
-
-	public void setCredentialsNonExpired(Boolean credentialsNonExpired) {
-		this.credentialsNonExpired = credentialsNonExpired;
-	}
-
-	public Boolean getEnabled() {
-		return enabled;
-	}
-
-	public void setEnabled(Boolean enabled) {
-		this.enabled = enabled;
 	}
 
 	public List<Permission> getPermissions() {
