@@ -11,7 +11,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.juniorsilvacc.fastservice.exceptions.ExceptionResponse;
-import com.juniorsilvacc.fastservice.services.exceptions.InvalidJwtAuthenticationException;
+import com.juniorsilvacc.fastservice.services.exceptions.InvalidAuthenticationException;
 import com.juniorsilvacc.fastservice.services.exceptions.MethodArgumentNotValidException;
 import com.juniorsilvacc.fastservice.services.exceptions.ResourceNotFoundException;
 
@@ -52,8 +52,8 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 		return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
 	}
 	
-	@ExceptionHandler(InvalidJwtAuthenticationException.class)
-	public final ResponseEntity<ExceptionResponse> invalidJwtAuthenticationException(
+	@ExceptionHandler(InvalidAuthenticationException.class)
+	public final ResponseEntity<ExceptionResponse> invalidAuthenticationException(
 			Exception ex, WebRequest request) {
 		ExceptionResponse exceptionResponse = new ExceptionResponse(
 				new Date(), 

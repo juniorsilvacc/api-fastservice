@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.juniorsilvacc.fastservice.domain.dtos.security.AccountCredentialsDTO;
 import com.juniorsilvacc.fastservice.domain.entities.User;
 import com.juniorsilvacc.fastservice.security.JwtToken;
-import com.juniorsilvacc.fastservice.services.exceptions.InvalidJwtAuthenticationException;
+import com.juniorsilvacc.fastservice.services.exceptions.InvalidAuthenticationException;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -33,7 +33,7 @@ public class AuthenticationController {
 	public String signin(@RequestBody AccountCredentialsDTO data) {
 		if(data == null ||  data.getEmail() == null || data.getEmail().isBlank()
 				|| data.getPassword() == null || data.getPassword().isBlank()) {
-			throw new InvalidJwtAuthenticationException("Solicitação de usuário inválida");
+			throw new InvalidAuthenticationException("Solicitação de usuário inválida");
 		}
 		
 		UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken= 

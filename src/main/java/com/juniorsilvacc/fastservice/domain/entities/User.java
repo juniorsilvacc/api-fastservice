@@ -9,6 +9,8 @@ import java.util.Objects;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.juniorsilvacc.fastservice.domain.dtos.UserDTO;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -42,6 +44,17 @@ public class User implements UserDetails, Serializable{
 	
 	private String password;
 	
+//	@Column(name = "account_non_expired")
+//	private Boolean accountNonExpired = true;
+//
+//	@Column(name = "account_non_locked")
+//	private Boolean accountNonLocked = true;
+//
+//	@Column(name = "credentials_non_expired")
+//	private Boolean credentialsNonExpired = true;
+//
+//	private Boolean enabled = true;
+	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "tb_user_permission", joinColumns = {@JoinColumn (name = "id_user")},
 		inverseJoinColumns =  {@JoinColumn (name = "id_permission")}
@@ -49,6 +62,16 @@ public class User implements UserDetails, Serializable{
 	private List<Permission> permissions;
 	
 	public User() {
+	}
+
+	public User(UserDTO obj) {
+		this.id = obj.getId();
+		this.name = obj.getName();
+		this.email = obj.getEmail();
+		this.cpf = obj.getCpf();
+		this.avatar = obj.getAvatar();
+		this.password = obj.getPassword();
+		this.permissions = obj.getPermissions();
 	}
 
 	public List<String> getRoles() {
@@ -134,6 +157,38 @@ public class User implements UserDetails, Serializable{
 	public void setAvatar(String avatar) {
 		this.avatar = avatar;
 	}
+
+//	public Boolean getAccountNonExpired() {
+//		return accountNonExpired;
+//	}
+//
+//	public void setAccountNonExpired(Boolean accountNonExpired) {
+//		this.accountNonExpired = accountNonExpired;
+//	}
+//
+//	public Boolean getAccountNonLocked() {
+//		return accountNonLocked;
+//	}
+//
+//	public void setAccountNonLocked(Boolean accountNonLocked) {
+//		this.accountNonLocked = accountNonLocked;
+//	}
+//
+//	public Boolean getCredentialsNonExpired() {
+//		return credentialsNonExpired;
+//	}
+//
+//	public void setCredentialsNonExpired(Boolean credentialsNonExpired) {
+//		this.credentialsNonExpired = credentialsNonExpired;
+//	}
+//
+//	public Boolean getEnabled() {
+//		return enabled;
+//	}
+//
+//	public void setEnabled(Boolean enabled) {
+//		this.enabled = enabled;
+//	}
 
 	public List<Permission> getPermissions() {
 		return permissions;

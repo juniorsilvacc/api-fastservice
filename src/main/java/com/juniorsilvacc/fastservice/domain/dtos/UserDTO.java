@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 import com.juniorsilvacc.fastservice.domain.entities.Permission;
+import com.juniorsilvacc.fastservice.domain.entities.User;
 
 public class UserDTO implements Serializable{
 
@@ -30,6 +31,16 @@ public class UserDTO implements Serializable{
 		this.avatar = avatar;
 		this.password = password;
 		this.permissions = permissions;
+	}
+	
+	public UserDTO(User obj) {
+		this.id = obj.getId();
+		this.name = obj.getName();
+		this.email = obj.getEmail();
+		this.cpf = obj.getCpf();
+		this.avatar = obj.getAvatar();
+		this.password = obj.getPassword();
+		this.permissions = obj.getPermissions();
 	}
 
 	public Integer getId() {
