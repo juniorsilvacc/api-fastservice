@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.juniorsilvacc.fastservice.domain.dtos.UserDTO;
 import com.juniorsilvacc.fastservice.domain.entities.Permission;
@@ -12,6 +13,8 @@ import com.juniorsilvacc.fastservice.domain.entities.User;
 import com.juniorsilvacc.fastservice.repositories.PermissionRepository;
 import com.juniorsilvacc.fastservice.repositories.UserRepository;
 import com.juniorsilvacc.fastservice.services.exceptions.MethodArgumentNotValidException;
+import com.juniorsilvacc.fastservice.services.exceptions.ResourceNotFoundException;
+import com.juniorsilvacc.fastservice.util.UploadUtil;
 
 @Service
 public class UserService {
@@ -44,6 +47,25 @@ public class UserService {
 		User newUser = repository.save(user);
 		
 		UserDTO dto = new UserDTO(newUser);
+		
+		return dto;
+	}
+
+	public UserDTO uploadAvatar(User user, MultipartFile image) {
+		Optional<User> entity = repository.findById(user.getId());
+		
+		if(!entity.isPresent()) {
+			throw new ResourceNotFoundException("Usuário não encontrado, somente usuários autenticados podem alterar o avatar");
+		}
+		
+		if(UploadUtil.uploadImage(image)) {
+			entity.get().setAvatar(image.getOriginalFilename());
+			
+		}
+		
+		var uploadAvatar = repository.save(entity.get());
+		
+		UserDTO dto = new UserDTO(uploadAvatar);
 		
 		return dto;
 	}

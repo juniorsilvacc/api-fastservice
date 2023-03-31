@@ -42,9 +42,9 @@ public class AuthenticationController {
 		 Authentication authenticate = this.authenticationManager
 	                .authenticate(usernamePasswordAuthenticationToken);
 		 
-		 var user = (User) authenticate.getPrincipal();
-		 
-		 return jwtToken.generateToken(user);
+		 var tokenJWT = jwtToken.generateToken((User) authenticate.getPrincipal());
+	        
+		 return tokenJWT;
 	}
 
 }

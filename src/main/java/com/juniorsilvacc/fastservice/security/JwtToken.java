@@ -8,6 +8,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.juniorsilvacc.fastservice.domain.dtos.security.TokenDTO;
 import com.juniorsilvacc.fastservice.domain.entities.User;
 
@@ -30,25 +32,38 @@ public class JwtToken {
 	}
 
 	public String generateToken(User user) {
-		String issuerURL = ServletUriComponentsBuilder
-				.fromCurrentContextPath().build().toUriString();
-		
-		return JWT.create()
-                .withIssuer(issuerURL)
-                .withSubject(user.getEmail())
-                .withClaim("roles", user.getRoles())
-                .withExpiresAt(new Date(System.currentTimeMillis() + expiration)) 
-                .sign(Algorithm.HMAC256(secret))
-                .strip();
+		try {
+			
+			String issuerURL = ServletUriComponentsBuilder
+					.fromCurrentContextPath().build().toUriString();
+			
+			return JWT.create()
+	                .withIssuer(issuerURL)
+	                .withSubject(user.getEmail())
+	                .withClaim("id", user.getId())
+	                .withClaim("roles", user.getRoles())
+	                .withExpiresAt(new Date(System.currentTimeMillis() + expiration)) 
+	                .sign(Algorithm.HMAC256(secret))
+	                .strip();
+			
+		} catch (JWTCreationException e) {
+			throw new RuntimeException("Erro ao gerar JWT Token");
+		}
 	}
 	
 	public String getSubject(String token) {
-		String issuerURL = ServletUriComponentsBuilder
-				.fromCurrentContextPath().build().toUriString();
-		
-        return JWT.require(Algorithm.HMAC256(secret))
-                .withIssuer(issuerURL)
-                .build().verify(token).getSubject();
+		try {
+			
+			String issuerURL = ServletUriComponentsBuilder
+					.fromCurrentContextPath().build().toUriString();
+			
+	        return JWT.require(Algorithm.HMAC256(secret))
+	                .withIssuer(issuerURL)
+	                .build().verify(token).getSubject();
+	        
+		} catch (JWTVerificationException e) {
+			throw new RuntimeException("Token inválido ou expirado");
+		}
     }
-
+	
 }

@@ -23,9 +23,8 @@ public class TokenDTO implements Serializable {
 		this.created = created;
 		this.expiration = expiration;
 		this.accessToken = accessToken;
-		
 	}
-
+	
 	public String getEmail() {
 		return email;
 	}
