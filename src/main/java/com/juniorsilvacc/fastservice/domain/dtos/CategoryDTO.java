@@ -12,7 +12,6 @@ import com.juniorsilvacc.fastservice.domain.entities.Category;
 public class CategoryDTO extends RepresentationModel<CategoryDTO> implements Serializable {
 
 	private static final long serialVersionUID = 1L; 
-	
 
 	private Integer id;
 	private String name;

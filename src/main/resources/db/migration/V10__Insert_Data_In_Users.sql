@@ -1,2 +1,2 @@
-INSERT INTO tb_user (name, email, cpf, avatar, password, account_non_expired, account_non_locked, credentials_non_expired, enabled) VALUES
+INSERT INTO tb_user (user_name, email, cpf, avatar, password, account_non_expired, account_non_locked, credentials_non_expired, enabled) VALUES
 	('ADMIN', 'admin@gmail.com', '11199988877', null, '$2a$12$HMG7zYtRTHFjTsX9Wo7eEurebK3spB8jiPNpoXuVU.u7XXlD7Yi3y', TRUE, TRUE, TRUE, TRUE);

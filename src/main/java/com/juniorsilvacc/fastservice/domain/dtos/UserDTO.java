@@ -7,39 +7,34 @@ import java.util.Objects;
 import com.juniorsilvacc.fastservice.domain.entities.Permission;
 import com.juniorsilvacc.fastservice.domain.entities.User;
 
-public class UserDTO implements Serializable{
+public class UserDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private Integer id;
-	private String name;
+	private String user_name;
 	private String email;
 	private String cpf;
-	private String avatar;
-	private String password;
+
 	private List<Permission> permissions;
-	
+
 	public UserDTO() {
 	}
-	
-	public UserDTO(Integer id, String name, String email, String cpf, String avatar, String password,
+
+	public UserDTO(Integer id, String user_name, String email, String cpf,
 			List<Permission> permissions) {
 		this.id = id;
-		this.name = name;
+		this.user_name = user_name;
 		this.email = email;
 		this.cpf = cpf;
-		this.avatar = avatar;
-		this.password = password;
 		this.permissions = permissions;
 	}
-	
+
 	public UserDTO(User obj) {
 		this.id = obj.getId();
-		this.name = obj.getName();
+		this.user_name = obj.getUser_name();
 		this.email = obj.getEmail();
 		this.cpf = obj.getCpf();
-		this.avatar = obj.getAvatar();
-		this.password = obj.getPassword();
 		this.permissions = obj.getPermissions();
 	}
 
@@ -51,12 +46,12 @@ public class UserDTO implements Serializable{
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getUser_name() {
+		return user_name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setUser_name(String user_name) {
+		this.user_name = user_name;
 	}
 
 	public String getEmail() {
@@ -73,22 +68,6 @@ public class UserDTO implements Serializable{
 
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
-	}
-
-	public String getAvatar() {
-		return avatar;
-	}
-
-	public void setAvatar(String avatar) {
-		this.avatar = avatar;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
 	}
 
 	public List<Permission> getPermissions() {
@@ -115,5 +94,5 @@ public class UserDTO implements Serializable{
 		UserDTO other = (UserDTO) obj;
 		return Objects.equals(id, other.id);
 	}
-	
+
 }

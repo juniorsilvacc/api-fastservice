@@ -1,5 +1,4 @@
 package com.juniorsilvacc.fastservice.domain.entities;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,14 +24,13 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "tb_user")
 public class User implements UserDetails, Serializable{
-
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	private String name;
+	private String user_name;
 	
 	@Column(unique = true)
 	private String email;
@@ -43,18 +41,7 @@ public class User implements UserDetails, Serializable{
 	private String avatar;
 	
 	private String password;
-	
-//	@Column(name = "account_non_expired")
-//	private Boolean accountNonExpired = true;
-//
-//	@Column(name = "account_non_locked")
-//	private Boolean accountNonLocked = true;
-//
-//	@Column(name = "credentials_non_expired")
-//	private Boolean credentialsNonExpired = true;
-//
-//	private Boolean enabled = true;
-	
+
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "tb_user_permission", joinColumns = {@JoinColumn (name = "id_user")},
 		inverseJoinColumns =  {@JoinColumn (name = "id_permission")}
@@ -64,13 +51,22 @@ public class User implements UserDetails, Serializable{
 	public User() {
 	}
 
+	public User(Integer id, String user_name, String email, String cpf, String avatar, String password,
+			List<Permission> permissions) {
+		this.id = id;
+		this.user_name = user_name;
+		this.email = email;
+		this.cpf = cpf;
+		this.avatar = avatar;
+		this.password = password;
+		this.permissions = permissions;
+	}
+
 	public User(UserDTO obj) {
 		this.id = obj.getId();
-		this.name = obj.getName();
+		this.user_name = obj.getUser_name();
 		this.email = obj.getEmail();
 		this.cpf = obj.getCpf();
-		this.avatar = obj.getAvatar();
-		this.password = obj.getPassword();
 		this.permissions = obj.getPermissions();
 	}
 
@@ -90,12 +86,12 @@ public class User implements UserDetails, Serializable{
 	
 	@Override
 	public String getPassword() {
-		return this.password;
+		return password;
 	}
 	
 	@Override
 	public String getUsername() {
-		return this.name;
+		return user_name;
 	}
 	
 	@Override
@@ -126,12 +122,12 @@ public class User implements UserDetails, Serializable{
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getUser_name() {
+		return user_name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setUser_name(String user_name) {
+		this.user_name = user_name;
 	}
 
 	public String getEmail() {
@@ -158,39 +154,10 @@ public class User implements UserDetails, Serializable{
 		this.avatar = avatar;
 	}
 
-//	public Boolean getAccountNonExpired() {
-//		return accountNonExpired;
-//	}
-//
-//	public void setAccountNonExpired(Boolean accountNonExpired) {
-//		this.accountNonExpired = accountNonExpired;
-//	}
-//
-//	public Boolean getAccountNonLocked() {
-//		return accountNonLocked;
-//	}
-//
-//	public void setAccountNonLocked(Boolean accountNonLocked) {
-//		this.accountNonLocked = accountNonLocked;
-//	}
-//
-//	public Boolean getCredentialsNonExpired() {
-//		return credentialsNonExpired;
-//	}
-//
-//	public void setCredentialsNonExpired(Boolean credentialsNonExpired) {
-//		this.credentialsNonExpired = credentialsNonExpired;
-//	}
-//
-//	public Boolean getEnabled() {
-//		return enabled;
-//	}
-//
-//	public void setEnabled(Boolean enabled) {
-//		this.enabled = enabled;
-//	}
-
 	public List<Permission> getPermissions() {
+		if (permissions == null) {
+			permissions = new ArrayList<>();
+		}
 		return permissions;
 	}
 
@@ -218,5 +185,4 @@ public class User implements UserDetails, Serializable{
 		User other = (User) obj;
 		return Objects.equals(id, other.id);
 	}
-
 }

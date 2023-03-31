@@ -8,6 +8,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.juniorsilvacc.fastservice.domain.dtos.security.TokenDTO;
 import com.juniorsilvacc.fastservice.domain.entities.User;
 
 @Service
@@ -19,14 +20,14 @@ public class JwtToken {
 	@Value("${jwt.expiration}")
 	private Long expiration;
 	
-//	public TokenDTO	createAccessToken (User user) {
-//		Date now = new Date();
-//		Date validity = new Date(now.getTime() + expiration);
-//		var accessToken = generateToken(user);
-//		
-//		return new TokenDTO(user.getEmail(), true, now, validity, accessToken);
-//		
-//	}
+	public TokenDTO	createAccessToken (User user) {
+		Date now = new Date();
+		Date validity = new Date(now.getTime() + expiration);
+		var accessToken = generateToken(user);
+		
+		return new TokenDTO(user.getEmail(), true, now, validity, accessToken);
+		
+	}
 
 	public String generateToken(User user) {
 		String issuerURL = ServletUriComponentsBuilder
@@ -36,7 +37,7 @@ public class JwtToken {
                 .withIssuer(issuerURL)
                 .withSubject(user.getEmail())
                 .withClaim("roles", user.getRoles())
-                .withExpiresAt(new Date(System.currentTimeMillis() + expiration))
+                .withExpiresAt(new Date(System.currentTimeMillis() + expiration)) 
                 .sign(Algorithm.HMAC256(secret))
                 .strip();
 	}
