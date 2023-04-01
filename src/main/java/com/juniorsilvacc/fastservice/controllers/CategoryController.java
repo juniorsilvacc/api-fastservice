@@ -26,6 +26,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/api/categories/v1")
@@ -104,7 +105,7 @@ public class CategoryController {
 		}
 	)
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public CategoryDTO create(@RequestBody Category category) {
+	public CategoryDTO create(@Valid @RequestBody Category category) {
 		return service.create(category);
 	}
 	
@@ -147,7 +148,7 @@ public class CategoryController {
 			}
 	)
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public CategoryDTO update(@PathVariable Integer id, @RequestBody Category category) {
+	public CategoryDTO update(@PathVariable Integer id, @Valid @RequestBody Category category) {
 		return service.update(id, category);
 	}
 }

@@ -15,8 +15,8 @@ import com.juniorsilvacc.fastservice.controllers.CategoryController;
 import com.juniorsilvacc.fastservice.domain.entities.Category;
 import com.juniorsilvacc.fastservice.domain.dtos.CategoryDTO;
 import com.juniorsilvacc.fastservice.repositories.CategoryRepository;
-import com.juniorsilvacc.fastservice.services.exceptions.MethodArgumentNotValidException;
-import com.juniorsilvacc.fastservice.services.exceptions.ResourceNotFoundException;
+import com.juniorsilvacc.fastservice.services.exceptions.DataIntegrityViolationException;
+import com.juniorsilvacc.fastservice.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class CategoryService {
@@ -26,7 +26,7 @@ public class CategoryService {
 	
 	public CategoryDTO findById(Integer id) {
 		Category entity = repository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException(
+				.orElseThrow(() -> new ObjectNotFoundException(
 						String.format("Categoria com id: %d não encontrado", id)));
 	
 		CategoryDTO dto = new CategoryDTO(entity);
@@ -50,19 +50,21 @@ public class CategoryService {
 		Optional<Category> entity = repository.findByName(category.getName());
 		
 		if(entity.isPresent()) {
-			throw new MethodArgumentNotValidException("Está categoria já existe");
+			throw new DataIntegrityViolationException("Está categoria já existe");
 		}
 		
 		Category newCategory = repository.save(category);
 		
 		CategoryDTO dto = new CategoryDTO(newCategory);
 		
+		dto.add(linkTo(methodOn(CategoryController.class).findById(dto.getId())).withSelfRel());
+		
 		return dto;
 	}
 
 	public void delete(Integer id) {
 		Category entity = repository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException(
+				.orElseThrow(() -> new ObjectNotFoundException(
 						String.format("Categoria com id: %d não encontrado", id)));
 		
 		repository.delete(entity);
@@ -72,14 +74,14 @@ public class CategoryService {
 		Optional<Category> oldEntity = repository.findById(id);
 		
 		if(!oldEntity.isPresent()) {
-			throw new ResourceNotFoundException(
+			throw new ObjectNotFoundException(
 					String.format("Categoria com id: %d não encontrado", id));
 		}
 		
 		Optional<Category> categoryExit = repository.findByName(category.getName());
 		
 		if(categoryExit.isPresent() && categoryExit.get().getName() != oldEntity.get().getName()) {
-			throw new MethodArgumentNotValidException("O nome dessa categoria já existe no sistema");
+			throw new DataIntegrityViolationException("O nome dessa categoria já existe no sistema");
 		}
 		
 		BeanUtils.copyProperties(category, oldEntity.get(), "id");
@@ -87,6 +89,8 @@ public class CategoryService {
 		var updatedEntity = repository.save(oldEntity.get());
 		
 		CategoryDTO dto = new CategoryDTO(updatedEntity);
+		
+		dto.add(linkTo(methodOn(CategoryController.class).findById(dto.getId())).withSelfRel());
 		
 		return dto;
 	}

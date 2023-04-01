@@ -18,6 +18,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "tb_order")
@@ -29,8 +31,10 @@ public class Order implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
+	@Size(max = 60)
 	private String name;
 	
+	@NotEmpty(message = "O campo mesa é obrigatório")
 	@Column(name = "position")
 	private Integer table;
 	

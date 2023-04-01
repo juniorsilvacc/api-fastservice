@@ -25,6 +25,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/api/orders/v1")
@@ -101,7 +102,7 @@ public class OrderController {
 					@ApiResponse(description = "Internal Error", responseCode = "500", content = @Content)
 			}
 	)
-	public OrderDTO create(@RequestBody Order order) {
+	public OrderDTO create(@Valid @RequestBody Order order) {
 		return service.create(order);
 	}
 	

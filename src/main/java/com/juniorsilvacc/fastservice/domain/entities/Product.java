@@ -15,6 +15,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "tb_product")
@@ -26,9 +28,17 @@ public class Product implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
+	@NotEmpty(message = "O campo nome é obrigatório")
+	@Size(min = 3, max = 50)
 	private String name;
+	
+	@NotEmpty(message = "O campo descrição é obrigatório")
+	@Size(max = 255)
 	private String description;
+	
+	@NotEmpty(message = "O campo preço é obrigatório")
 	private Double price;
+	
 	private String image;
 	
 	@ManyToMany

@@ -20,6 +20,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/api/items/v1")
@@ -49,7 +50,7 @@ public class ItemOrderController {
 					@ApiResponse(description = "Internal Error", responseCode = "500", content = @Content)
 			}
 	)
-	public ItemOrderDTO create(@RequestBody ItemOrder itemOrder) {
+	public ItemOrderDTO create(@Valid @RequestBody ItemOrder itemOrder) {
 		return service.create(itemOrder);
 	}
 	

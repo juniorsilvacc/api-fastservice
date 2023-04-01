@@ -12,7 +12,7 @@ import com.juniorsilvacc.fastservice.domain.entities.Product;
 import com.juniorsilvacc.fastservice.repositories.ItemOrderRepository;
 import com.juniorsilvacc.fastservice.repositories.OrderRepository;
 import com.juniorsilvacc.fastservice.repositories.ProductRepository;
-import com.juniorsilvacc.fastservice.services.exceptions.ResourceNotFoundException;
+import com.juniorsilvacc.fastservice.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class ItemOrderService {
@@ -34,7 +34,7 @@ public class ItemOrderService {
 		Optional<Product> product = repositoryProduct.findById(productID);	
 		
 		if(!order.isPresent() || !product.isPresent()) {
-			throw new ResourceNotFoundException("Comanda ou produto não existente");
+			throw new ObjectNotFoundException("Comanda e/ou produto não existente");
 		}
 		
 		ItemOrder newItem = repository.save(itemOrder);
@@ -48,7 +48,7 @@ public class ItemOrderService {
 		Optional<ItemOrder> item = repository.findById(id);
 		
 		if(!item.isPresent()) {
-			throw new ResourceNotFoundException(String.format("Item com id: %d não encontrado", id));
+			throw new ObjectNotFoundException(String.format("Item com id: %d não encontrado", id));
 		}
 		
 		repository.deleteById(id);

@@ -24,6 +24,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/api/users/v1")
@@ -55,11 +56,29 @@ public class UserController {
 			}
 	)
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public UserDTO create(@RequestBody User user) {
+	public UserDTO create(@Valid @RequestBody User user) {
 		return service.create(user);
 	}
 	
 	@PutMapping(value = "/upload/avatar")
+	@Operation(
+			summary = "Upload avatar waiter",
+			description = "Updating an image for the waiter avatar",
+			tags = {"User"},
+			responses = {
+					@ApiResponse(
+							description = "Sucess", 
+							responseCode = "200", 
+							content = 
+									@Content (
+											mediaType = "application/json",
+											array = @ArraySchema(schema = @Schema(implementation = UserDTO.class))
+										)),
+					@ApiResponse(description = "Unaunthorized", responseCode = "401", content = @Content),
+					@ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
+					@ApiResponse(description = "Internal Error", responseCode = "500", content = @Content)
+			}
+	)
 	public UserDTO uploadAvatar(@AuthenticationPrincipal User user, @RequestParam("file") MultipartFile image) {
 		return service.uploadAvatar(user, image);
 	}

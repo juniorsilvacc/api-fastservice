@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
+import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -20,6 +21,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "tb_user")
@@ -30,16 +34,25 @@ public class User implements UserDetails, Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
+	@NotEmpty(message = "O campo nome é obrigatório")
+	@Size(min = 3, max = 60)
 	private String user_name;
 	
+	@NotEmpty(message = "O campo e-mail é obrigatório")
+	@Size(max = 50)
+	@Email
 	@Column(unique = true)
 	private String email;
 	
+	@NotEmpty(message = "O campo CPF é obrigatório")
+	@CPF
 	@Column(unique = true)
 	private String cpf;
 	
 	private String avatar;
 	
+	@NotEmpty(message = "O campo senha é obrigatório")
+	@Size(min = 6, max = 60)
 	private String password;
 
 	@ManyToMany(fetch = FetchType.EAGER)

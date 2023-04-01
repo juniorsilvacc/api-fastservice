@@ -16,8 +16,8 @@ import com.juniorsilvacc.fastservice.controllers.ProductController;
 import com.juniorsilvacc.fastservice.domain.dtos.ProductDTO;
 import com.juniorsilvacc.fastservice.domain.entities.Product;
 import com.juniorsilvacc.fastservice.repositories.ProductRepository;
-import com.juniorsilvacc.fastservice.services.exceptions.MethodArgumentNotValidException;
-import com.juniorsilvacc.fastservice.services.exceptions.ResourceNotFoundException;
+import com.juniorsilvacc.fastservice.services.exceptions.DataIntegrityViolationException;
+import com.juniorsilvacc.fastservice.services.exceptions.ObjectNotFoundException;
 import com.juniorsilvacc.fastservice.util.UploadUtil;
 
 @Service
@@ -28,7 +28,7 @@ public class ProductService {
 
 	public ProductDTO findById(Integer id) {
 		Product entity = repository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException(
+				.orElseThrow(() -> new ObjectNotFoundException(
 						String.format("Produto com id: %d não encontrado", id)));
 		
 		ProductDTO dto = new ProductDTO(entity);
@@ -52,7 +52,7 @@ public class ProductService {
 		Optional<Product> entity = repository.findByName(product.getName());
 		
 		if(entity.isPresent()) {
-			throw new MethodArgumentNotValidException("Esse produto já existe");
+			throw new DataIntegrityViolationException("Esse produto já existe");
 		}
 			
 		if(UploadUtil.uploadImage(image)) {
@@ -62,6 +62,8 @@ public class ProductService {
 		Product newProduct = repository.save(product);
 			
 		ProductDTO dto = new ProductDTO(newProduct);
+		
+		dto.add(linkTo(methodOn(ProductController.class).findById(dto.getId())).withSelfRel());
 			
 		return dto;
 		
@@ -69,7 +71,7 @@ public class ProductService {
 
 	public void remove(Integer id) {
 		Product entity = repository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException(
+				.orElseThrow(() -> new ObjectNotFoundException(
 						String.format("Produto com id: %d não encontrado", id)));
 		
 		repository.delete(entity);
@@ -80,7 +82,7 @@ public class ProductService {
 		Optional<Product> oldEntity = repository.findById(id);
 		
 		if(!oldEntity.isPresent()) {
-			throw new ResourceNotFoundException(
+			throw new ObjectNotFoundException(
 					String.format("Produto com id: %d não encontrado", id));
 		}
 		
@@ -88,7 +90,7 @@ public class ProductService {
 		
 		//Se o nome existe EE o nome que está no banco de dados é diferente do que está sendo enviado
 		if(productExit.isPresent() && productExit.get().getName() != oldEntity.get().getName()) {
-			throw new MethodArgumentNotValidException("O nome desse produto já existe no sistema");
+			throw new DataIntegrityViolationException("O nome desse produto já existe no sistema");
 		}
 		
 		BeanUtils.copyProperties(product, oldEntity.get(), "id");
@@ -96,6 +98,8 @@ public class ProductService {
 		var updatedEntity = repository.save(oldEntity.get());
 		
 		ProductDTO dto = new ProductDTO(updatedEntity);
+		
+		dto.add(linkTo(methodOn(ProductController.class).findById(dto.getId())).withSelfRel());
 		
 		return dto;
 	}

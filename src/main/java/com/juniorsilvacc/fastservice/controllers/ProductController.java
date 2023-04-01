@@ -31,6 +31,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/api/products/v1")
@@ -109,7 +110,7 @@ public class ProductController {
 			}
 	)
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ProductDTO create(@ModelAttribute Product product, @RequestParam("file") MultipartFile image) {
+	public ProductDTO create(@Valid @ModelAttribute Product product, @RequestParam("file") MultipartFile image) {
 		return service.create(product, image);
 	}
 	
@@ -152,7 +153,7 @@ public class ProductController {
 			}
 	)
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ProductDTO update(@RequestBody Product product, @PathVariable Integer id) {
+	public ProductDTO update(@Valid @RequestBody Product product, @PathVariable Integer id) {
 		return service.update(product, id);
 	}
 }

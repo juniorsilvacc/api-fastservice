@@ -12,8 +12,8 @@ import com.juniorsilvacc.fastservice.domain.entities.Permission;
 import com.juniorsilvacc.fastservice.domain.entities.User;
 import com.juniorsilvacc.fastservice.repositories.PermissionRepository;
 import com.juniorsilvacc.fastservice.repositories.UserRepository;
-import com.juniorsilvacc.fastservice.services.exceptions.MethodArgumentNotValidException;
-import com.juniorsilvacc.fastservice.services.exceptions.ResourceNotFoundException;
+import com.juniorsilvacc.fastservice.services.exceptions.DataIntegrityViolationException;
+import com.juniorsilvacc.fastservice.services.exceptions.ObjectNotFoundException;
 import com.juniorsilvacc.fastservice.util.UploadUtil;
 
 @Service
@@ -34,19 +34,19 @@ public class UserService {
 		Permission role = permission.findByDescription("ROLE_WAITER");
 
 		if(email.isPresent()) {
-			throw new MethodArgumentNotValidException("O e-mail já existe");
+			throw new DataIntegrityViolationException("O e-mail já existe");
 		}
 		
 		if(cpf.isPresent()) {
-			throw new MethodArgumentNotValidException("O CPF já existe");
+			throw new DataIntegrityViolationException("O CPF já existe");
 		}
 		
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		user.getPermissions().add(role);
 		
-		User newUser = repository.save(user);
+		User newWaiter = repository.save(user);
 		
-		UserDTO dto = new UserDTO(newUser);
+		UserDTO dto = new UserDTO(newWaiter);
 		
 		return dto;
 	}
@@ -55,12 +55,11 @@ public class UserService {
 		Optional<User> entity = repository.findById(user.getId());
 		
 		if(!entity.isPresent()) {
-			throw new ResourceNotFoundException("Usuário não encontrado, somente usuários autenticados podem alterar o avatar");
+			throw new ObjectNotFoundException("Somente usuários autenticados podem alterar o avatar");
 		}
 		
 		if(UploadUtil.uploadImage(image)) {
 			entity.get().setAvatar(image.getOriginalFilename());
-			
 		}
 		
 		var uploadAvatar = repository.save(entity.get());

@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "tb_item_order")
@@ -21,12 +22,15 @@ public class ItemOrder implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
+	@NotEmpty(message = "O campo quantidade é obrigatório")
 	private Integer amount;
 	
+	@NotEmpty(message = "O campo Id Comanda é obrigatório")
 	@ManyToOne
 	@JoinColumn(name = "order_id")
 	private Order order;
 	
+	@NotEmpty(message = "O campo Id Produto é obrigatório")
 	@ManyToOne
 	@JoinColumn(name = "product_id")
 	private Product product;

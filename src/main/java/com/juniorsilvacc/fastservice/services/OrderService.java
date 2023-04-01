@@ -16,8 +16,8 @@ import com.juniorsilvacc.fastservice.domain.dtos.OrderDTO;
 import com.juniorsilvacc.fastservice.domain.entities.Order;
 import com.juniorsilvacc.fastservice.domain.enums.Status;
 import com.juniorsilvacc.fastservice.repositories.OrderRepository;
-import com.juniorsilvacc.fastservice.services.exceptions.MethodArgumentNotValidException;
-import com.juniorsilvacc.fastservice.services.exceptions.ResourceNotFoundException;
+import com.juniorsilvacc.fastservice.services.exceptions.DataIntegrityViolationException;
+import com.juniorsilvacc.fastservice.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class OrderService {
@@ -27,7 +27,7 @@ public class OrderService {
 	
 	public OrderDTO findById(Integer id) {
 		Order entity = repository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException(
+				.orElseThrow(() -> new ObjectNotFoundException(
 						String.format("Pedido com id: %d não encontrado", id)));
 		
 		OrderDTO dto = new OrderDTO(entity);
@@ -51,7 +51,7 @@ public class OrderService {
 		Optional<Order> entity = repository.findByTable(order.getTable());
 		
 		if(entity.isPresent()) {
-			throw new MethodArgumentNotValidException(
+			throw new DataIntegrityViolationException(
 					String.format("A mesa %d já está em uso", order.getTable()));
 		}
 		
@@ -62,19 +62,21 @@ public class OrderService {
 		
 		OrderDTO dto = new OrderDTO(newOrder);
 		
+		dto.add(linkTo(methodOn(OrderController.class).findById(dto.getId())).withSelfRel());
+		
 		return dto;
 	}
 
 	public void closeOrder(Integer id) {
 		Order order = repository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Pedido não encontrado"));
+				.orElseThrow(() -> new ObjectNotFoundException("Pedido não encontrado"));
 		
 		repository.delete(order);
 	}
 
 	public OrderDTO send(Integer id) {
 		Order order = repository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException(
+				.orElseThrow(() -> new ObjectNotFoundException(
 						String.format("Pedido com id: %d não encontrado", id)));
 		
 		order.setDraft(false);
@@ -84,13 +86,15 @@ public class OrderService {
 		
 		OrderDTO dto = new OrderDTO(send);
 		
+		dto.add(linkTo(methodOn(OrderController.class).findById(dto.getId())).withSelfRel());
+		
 		return dto;
 		
 	}
 
 	public OrderDTO conclude(Integer id) {
 		Order order = repository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException(
+				.orElseThrow(() -> new ObjectNotFoundException(
 						String.format("Pedido com id: %d não encontrado", id)));
 		
 		order.setStatus(Status.FINISHED);
@@ -98,6 +102,8 @@ public class OrderService {
 		Order send = repository.save(order);
 		
 		OrderDTO dto = new OrderDTO(send);
+		
+		dto.add(linkTo(methodOn(OrderController.class).findById(dto.getId())).withSelfRel());
 		
 		return dto;
 	}

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.juniorsilvacc.fastservice.domain.dtos.CategoryDTO;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,6 +14,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "tb_category")
@@ -24,7 +27,11 @@ public class Category implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
+	@NotEmpty(message = "O campo nome é obrigatório")
+	@Size(min = 3, max = 50)
 	private String name;
+	
+	@Size(max = 255)
 	private String description;
 	
 	@JsonIgnore
@@ -38,6 +45,12 @@ public class Category implements Serializable {
 		this.id = id;
 		this.name = name;
 		this.description = description;
+	}
+	
+	public Category(CategoryDTO obj) {
+		this.id = obj.getId();
+		this.name = obj.getName();
+		this.description = obj.getDescription();
 	}
 
 	public Integer getId() {
