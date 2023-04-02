@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.juniorsilvacc.fastservice.exceptions.ExceptionResponse;
+import com.juniorsilvacc.fastservice.exceptions.StandardError;
 import com.juniorsilvacc.fastservice.exceptions.ValidationError;
 import com.juniorsilvacc.fastservice.services.exceptions.InvalidAuthenticationException;
 import com.juniorsilvacc.fastservice.services.exceptions.DataIntegrityViolationException;
@@ -21,38 +21,38 @@ import jakarta.servlet.http.HttpServletRequest;
 public class CustomizedResponseEntityExceptionHandler {
 	
 	@ExceptionHandler(Exception.class)
-	public final ResponseEntity<ExceptionResponse> handleAllExceptions(
+	public final ResponseEntity<StandardError> handleAllExceptions(
 			Exception ex, HttpServletRequest  request) {
 		
-		ExceptionResponse exceptionResponse = new ExceptionResponse(System.currentTimeMillis(), HttpStatus.INTERNAL_SERVER_ERROR.value(),
+		StandardError exceptionResponse = new StandardError(System.currentTimeMillis(), HttpStatus.INTERNAL_SERVER_ERROR.value(),
 				"Internal Server Error", ex.getMessage(), request.getRequestURI());
 		
 		return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	@ExceptionHandler(ObjectNotFoundException.class)
-	public final ResponseEntity<ExceptionResponse> objectNotFoundException(
+	public final ResponseEntity<StandardError> objectNotFoundException(
 			Exception ex, HttpServletRequest request) {
 		
-		ExceptionResponse exceptionResponse = new ExceptionResponse(System.currentTimeMillis(), HttpStatus.NOT_FOUND.value(),
+		StandardError exceptionResponse = new StandardError(System.currentTimeMillis(), HttpStatus.NOT_FOUND.value(),
 				"Object Not Found", ex.getMessage(), request.getRequestURI());
 		
 		return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
 	}
 	
 	@ExceptionHandler(DataIntegrityViolationException.class)
-	public final ResponseEntity<ExceptionResponse> dataIntegrityViolationException(
+	public final ResponseEntity<StandardError> dataIntegrityViolationException(
 			Exception ex, HttpServletRequest request) {
-		ExceptionResponse exceptionResponse = new ExceptionResponse(System.currentTimeMillis(), HttpStatus.BAD_REQUEST.value(),
+		StandardError exceptionResponse = new StandardError(System.currentTimeMillis(), HttpStatus.BAD_REQUEST.value(),
 				"Data Integrity Violation", ex.getMessage(), request.getRequestURI());
 		
 		return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
 	}
 	
 	@ExceptionHandler(InvalidAuthenticationException.class)
-	public final ResponseEntity<ExceptionResponse> invalidAuthenticationException(
+	public final ResponseEntity<StandardError> invalidAuthenticationException(
 			Exception ex, HttpServletRequest request) {
-		ExceptionResponse exceptionResponse = new ExceptionResponse(System.currentTimeMillis(), HttpStatus.FORBIDDEN.value(),
+		StandardError exceptionResponse = new StandardError(System.currentTimeMillis(), HttpStatus.FORBIDDEN.value(),
 				"Invalid Autentication", ex.getMessage(), request.getRequestURI());
 		
 		return new ResponseEntity<>(exceptionResponse, HttpStatus.FORBIDDEN);

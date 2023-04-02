@@ -2,7 +2,7 @@ package com.juniorsilvacc.fastservice.exceptions;
 
 import java.io.Serializable;
 
-public class ExceptionResponse implements Serializable {
+public class StandardError implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -12,10 +12,10 @@ public class ExceptionResponse implements Serializable {
 	private String message;
 	private String path;
 	
-	public ExceptionResponse() {
+	public StandardError() {
 	}
 
-	public ExceptionResponse(Long timestamp, Integer status, String error, String message, String path) {
+	public StandardError(Long timestamp, Integer status, String error, String message, String path) {
 		this.timestamp = timestamp;
 		this.status = status;
 		this.error = error;
