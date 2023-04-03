@@ -19,6 +19,7 @@ import com.juniorsilvacc.fastservice.domain.dtos.CategoryDTO;
 import com.juniorsilvacc.fastservice.domain.entities.Category;
 import com.juniorsilvacc.fastservice.repositories.CategoryRepository;
 import com.juniorsilvacc.fastservice.services.CategoryService;
+import com.juniorsilvacc.fastservice.services.exceptions.DataIntegrityViolationException;
 import com.juniorsilvacc.fastservice.services.exceptions.ObjectNotFoundException;
 
 @SpringBootTest
@@ -29,6 +30,7 @@ class CategoryServiceTest {
 	private static final String DESCRIPTION = "O hambúrguer foi o mais pedido no país durante o último ano.";
 	
 	private static final String OBJECT_NOT_FOUND = "Categoria com id: %d não encontrado " + ID;
+	private static final String OBJECT_EXISTS = "Está categoria já existe";
 	
 	private static final Integer INDEX = 0;
 	
@@ -39,7 +41,7 @@ class CategoryServiceTest {
 	CategoryRepository repository;
 	
 	private Category category;
-	private CategoryDTO categoryDTO;
+//	private CategoryDTO categoryDTO;
 
 	@BeforeEach
 	void setUp() throws Exception {
@@ -117,6 +119,19 @@ class CategoryServiceTest {
 		assertEquals(ID, response.getId());
 		assertEquals(NAME, response.getName());
 		assertEquals(DESCRIPTION, response.getDescription());
+	}
+	
+	@Test
+	void whenFindByEmailThenReturnDataIntegrityViolationException() {
+		when(repository.findByName(NAME))
+    		.thenThrow(new DataIntegrityViolationException(OBJECT_EXISTS));
+		
+		try {
+			service.create(category);
+		} catch (Exception e) {
+			assertEquals(DataIntegrityViolationException.class, e.getClass());
+            assertEquals(OBJECT_EXISTS, e.getMessage());
+		}
 	}
 
 	@Test
