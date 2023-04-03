@@ -2,10 +2,8 @@ package com.juniorsilvacc.fastservice.unittests.mockito.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,8 +30,6 @@ class CategoryServiceTest {
 	
 	private static final String OBJECT_NOT_FOUND = "Categoria com id: %d não encontrado " + ID;
 	private static final String OBJECT_EXISTS = "Está categoria já existe";
-	
-	private static final Integer INDEX = 0;
 	
 	@InjectMocks
 	private CategoryService service;
@@ -65,19 +61,6 @@ class CategoryServiceTest {
 		assertEquals(1, response.getId());
 		assertEquals("Hambúrguers", response.getName());
 		assertEquals("O hambúrguer foi o mais pedido no país durante o último ano.", response.getDescription());
-	}
-	
-	@Test
-	void whenFindByIdThenReturnObjectNotFoundException() {
-		when(repository.findById(ID))
-        	.thenThrow(new ObjectNotFoundException(OBJECT_NOT_FOUND));
-		
-		try {
-			service.findById(ID);
-		} catch (Exception e) {
-			assertEquals(ObjectNotFoundException.class, e.getClass());
-            assertEquals(OBJECT_NOT_FOUND, e.getMessage());
-		}
 	}
 
 	@Test
@@ -124,6 +107,54 @@ class CategoryServiceTest {
 	}
 	
 	@Test
+	void deleteWithSuccess() {
+		Category entity = new Category(ID, NAME, DESCRIPTION);
+		entity.setId(1);
+		
+		when(repository.findById(1)).thenReturn(Optional.of(entity));
+		
+		service.delete(1);
+	}
+
+	@Test
+	void whenUpdateThenReturnSuccess() {
+		Category entity = new Category(ID, NAME, DESCRIPTION);
+		Category persisted = entity;
+		persisted.setId(1);
+		
+		when(repository.findById(1)).thenReturn(Optional.of(entity));
+		when(repository.save(entity)).thenReturn(persisted);
+		
+		var response = service.update(1, entity);
+
+        assertNotNull(response);
+        assertEquals(CategoryDTO.class, response.getClass());
+        
+        assertNotNull(response);
+		assertNotNull(response.getId());
+		assertNotNull(response.getLinks());
+		
+		assertNotNull(response.toString().contains("links: [</api/books/v1/1>;rel=\"self\"]"));
+        
+        assertEquals(1, response.getId());
+        assertEquals(NAME, response.getName());
+        assertEquals(DESCRIPTION, response.getDescription());
+	}
+	
+	@Test
+	void whenFindByIdThenReturnObjectNotFoundException() {
+		when(repository.findById(ID))
+        	.thenThrow(new ObjectNotFoundException(OBJECT_NOT_FOUND));
+		
+		try {
+			service.findById(ID);
+		} catch (Exception e) {
+			assertEquals(ObjectNotFoundException.class, e.getClass());
+            assertEquals(OBJECT_NOT_FOUND, e.getMessage());
+		}
+	}
+	
+	@Test
 	void whenFindByEmailThenReturnDataIntegrityViolationException() {
 		when(repository.findByName(NAME))
     		.thenThrow(new DataIntegrityViolationException(OBJECT_EXISTS));
@@ -134,21 +165,6 @@ class CategoryServiceTest {
 			assertEquals(DataIntegrityViolationException.class, e.getClass());
             assertEquals(OBJECT_EXISTS, e.getMessage());
 		}
-	}
-
-	@Test
-	void testDelete() {
-		Category entity = new Category(ID, NAME, DESCRIPTION);
-		entity.setId(1);
-		
-		when(repository.findById(1)).thenReturn(Optional.of(entity));
-		
-		service.delete(1);
-	}
-
-	@Test
-	void testUpdate() {
-		fail("Not yet implemented");
 	}
 	
 	private void inputCategory() {
