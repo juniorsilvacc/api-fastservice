@@ -39,6 +39,7 @@ class CategoryServiceTest {
 	CategoryRepository repository;
 	
 	private Category category;
+	private CategoryDTO categoryDTO;
 
 	@BeforeEach
 	void setUp() throws Exception {
@@ -83,7 +84,13 @@ class CategoryServiceTest {
 		
 		List<CategoryDTO> response = service.findAll();
 		
+		var objCategory1 = response.get(0);
+		
 		assertNotNull(response);
+		
+		assertNotNull(objCategory1.getLinks());
+		assertNotNull(objCategory1.toString().contains("links: [</api/categories/v1/1>;rel=\"self\"]"));
+		
 		assertEquals(1, response.size());
 		assertEquals(CategoryDTO.class, response.get(INDEX).getClass());
 		
@@ -93,8 +100,23 @@ class CategoryServiceTest {
 	}
 
 	@Test
-	void testCreate() {
-		fail("Not yet implemented");
+	void whenCreateThenReturnSucess() {
+		Category entity = new Category(ID, NAME, DESCRIPTION);
+		Category persisted = entity;
+		
+		when(repository.save(entity)).thenReturn(persisted);
+		
+		CategoryDTO response = service.create(persisted);
+		
+		assertNotNull(response);
+		assertNotNull(response.getId());
+		assertNotNull(response.getLinks());
+		
+		assertNotNull(response.toString().contains("links: [</api/categories/v1/1>;rel=\"self\"]"));
+		
+		assertEquals(ID, response.getId());
+		assertEquals(NAME, response.getName());
+		assertEquals(DESCRIPTION, response.getDescription());
 	}
 
 	@Test
