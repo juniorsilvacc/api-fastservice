@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,8 +42,7 @@ class CategoryServiceTest {
 	CategoryRepository repository;
 	
 	private Category category;
-//	private CategoryDTO categoryDTO;
-
+	
 	@BeforeEach
 	void setUp() throws Exception {
 		MockitoAnnotations.openMocks(this);
@@ -86,6 +86,8 @@ class CategoryServiceTest {
 		
 		List<CategoryDTO> response = service.findAll();
 		
+		assertEquals(1, response.size());
+		
 		var objCategory1 = response.get(0);
 		
 		assertNotNull(response);
@@ -93,12 +95,12 @@ class CategoryServiceTest {
 		assertNotNull(objCategory1.getLinks());
 		assertNotNull(objCategory1.toString().contains("links: [</api/categories/v1/1>;rel=\"self\"]"));
 		
-		assertEquals(1, response.size());
-		assertEquals(CategoryDTO.class, response.get(INDEX).getClass());
 		
-		assertEquals(ID, response.get(INDEX).getId());
-		assertEquals(NAME, response.get(INDEX).getName());
-		assertEquals(DESCRIPTION, response.get(INDEX).getDescription());
+		assertEquals(CategoryDTO.class, objCategory1.getClass());
+		
+		assertEquals(ID, objCategory1.getId());
+		assertEquals(NAME, objCategory1.getName());
+		assertEquals(DESCRIPTION, objCategory1.getDescription());
 	}
 
 	@Test
@@ -136,7 +138,12 @@ class CategoryServiceTest {
 
 	@Test
 	void testDelete() {
-		fail("Not yet implemented");
+		Category entity = new Category(ID, NAME, DESCRIPTION);
+		entity.setId(1);
+		
+		when(repository.findById(1)).thenReturn(Optional.of(entity));
+		
+		service.delete(1);
 	}
 
 	@Test
