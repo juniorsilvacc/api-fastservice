@@ -14,7 +14,9 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
 
+import com.juniorsilvacc.fastservice.domain.dtos.CategoryDTO;
 import com.juniorsilvacc.fastservice.domain.dtos.ProductDTO;
+import com.juniorsilvacc.fastservice.domain.entities.Category;
 import com.juniorsilvacc.fastservice.domain.entities.Product;
 import com.juniorsilvacc.fastservice.repositories.ProductRepository;
 import com.juniorsilvacc.fastservice.services.ProductService;
@@ -92,12 +94,40 @@ class ProductServiceTest {
 	
 	@Test
 	void deleteProductWithSuccess() {
-		Product product = new Product(ID, NAME, DESCRIPTION, PRICE, IMAGE);
-		product.setId(1);
+		Product entity = new Product(ID, NAME, DESCRIPTION, PRICE, IMAGE);
+		entity.setId(1);
 		
 		when(repository.findById(1)).thenReturn(Optional.of(product));
 		
 		repository.delete(product);
+	}
+	
+	@Test
+	void whenUpdatingProductReturnsSuccessfully() {
+		Product entity = new Product(ID, NAME, DESCRIPTION, PRICE, IMAGE);
+		Product persisted = entity;
+		product.setId(1);
+		
+		when(repository.findById(1)).thenReturn(Optional.of(product));
+		when(repository.save(entity)).thenReturn(persisted);
+		
+		var response = service.update(entity, 1);
+		
+		assertNotNull(response);
+        assertEquals(ProductDTO.class, response.getClass());
+        
+        assertNotNull(response);
+		assertNotNull(response.getId());
+		assertNotNull(response.getLinks());
+		
+		assertNotNull(response.toString().contains("links: [</api/products/v1/1>;rel=\"self\"]"));
+		
+		assertEquals(ID, response.getId());
+		assertEquals(NAME, response.getName());
+		assertEquals(DESCRIPTION, response.getDescription());
+		assertEquals(PRICE, response.getPrice());
+		assertEquals(IMAGE, response.getImage());
+		
 	}
 	
 	private void inputProduct() {
