@@ -90,6 +90,16 @@ class ProductServiceTest {
 		assertEquals(IMAGE, response.getImage());
 	}
 	
+	@Test
+	void deleteProductWithSuccess() {
+		Product product = new Product(ID, NAME, DESCRIPTION, PRICE, IMAGE);
+		product.setId(1);
+		
+		when(repository.findById(1)).thenReturn(Optional.of(product));
+		
+		repository.delete(product);
+	}
+	
 	private void inputProduct() {
 		product = new Product(ID, NAME, DESCRIPTION, PRICE, IMAGE);
 	}
