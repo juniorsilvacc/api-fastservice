@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -64,6 +65,32 @@ class OrderServiceTest {
 		assertEquals(DRAFT, response.getDraft());
 		assertEquals(MOMENT, response.getMoment());
 		assertEquals(STATUS, response.getStatus());
+	}
+	
+	@Test
+	void whenFindAllThenReturnAnListOfOrders() {
+		when(repository.findAll()).thenReturn(List.of(order));
+		
+		List<OrderDTO> response = service.findAll();
+		
+		assertEquals(1, response.size());
+		
+		var objOrders1 = response.get(0);
+		
+		assertNotNull(response);
+		
+		assertNotNull(objOrders1.getLinks());
+		assertNotNull(response.toString().contains("links: [</api/orders/v1/1>;rel=\"self\"]"));
+		
+		
+		assertEquals(OrderDTO.class, objOrders1.getClass());
+		
+		assertEquals(ID, objOrders1.getId());
+		assertEquals(NAME, objOrders1.getName());
+		assertEquals(TABLE, objOrders1.getTable());
+		assertEquals(DRAFT, objOrders1.getDraft());
+		assertEquals(MOMENT, objOrders1.getMoment());
+		assertEquals(STATUS, objOrders1.getStatus());
 	}
 	
 	private void inputOrder() {
