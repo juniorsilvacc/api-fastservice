@@ -14,12 +14,11 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
 
-import com.juniorsilvacc.fastservice.domain.dtos.CategoryDTO;
 import com.juniorsilvacc.fastservice.domain.dtos.ProductDTO;
-import com.juniorsilvacc.fastservice.domain.entities.Category;
 import com.juniorsilvacc.fastservice.domain.entities.Product;
 import com.juniorsilvacc.fastservice.repositories.ProductRepository;
 import com.juniorsilvacc.fastservice.services.ProductService;
+import com.juniorsilvacc.fastservice.services.exceptions.ObjectNotFoundException;
 
 @SpringBootTest
 class ProductServiceTest {
@@ -29,6 +28,8 @@ class ProductServiceTest {
 	private static final String DESCRIPTION = "Hambúrguer de 450g recheado de catupity com calabresa";
 	private static final Double PRICE = 30.0;
 	private static final String IMAGE = "fresh-pepper.jpg";
+	
+	private static final String OBJECT_NOT_FOUND = "Produto com id: %d não encontrado " + ID;
 	
 	@InjectMocks
 	private ProductService service;
@@ -127,7 +128,19 @@ class ProductServiceTest {
 		assertEquals(DESCRIPTION, response.getDescription());
 		assertEquals(PRICE, response.getPrice());
 		assertEquals(IMAGE, response.getImage());
+	}
+	
+	@Test
+	void whenFindByIdThenReturnObjectNotFoundException() {
+		when(repository.findById(ID))
+        	.thenThrow(new ObjectNotFoundException(OBJECT_NOT_FOUND));
 		
+		try {
+			service.findById(ID);
+		} catch (Exception e) {
+			assertEquals(ObjectNotFoundException.class, e.getClass());
+            assertEquals(OBJECT_NOT_FOUND, e.getMessage());
+		}
 	}
 	
 	private void inputProduct() {
