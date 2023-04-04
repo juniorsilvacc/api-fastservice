@@ -18,6 +18,7 @@ import com.juniorsilvacc.fastservice.domain.dtos.ProductDTO;
 import com.juniorsilvacc.fastservice.domain.entities.Product;
 import com.juniorsilvacc.fastservice.repositories.ProductRepository;
 import com.juniorsilvacc.fastservice.services.ProductService;
+import com.juniorsilvacc.fastservice.services.exceptions.DataIntegrityViolationException;
 import com.juniorsilvacc.fastservice.services.exceptions.ObjectNotFoundException;
 
 @SpringBootTest
@@ -30,6 +31,7 @@ class ProductServiceTest {
 	private static final String IMAGE = "fresh-pepper.jpg";
 	
 	private static final String OBJECT_NOT_FOUND = "Produto com id: %d não encontrado " + ID;
+	private static final String OBJECT_EXISTS = "Está categoria já existe";
 	
 	@InjectMocks
 	private ProductService service;
@@ -140,6 +142,24 @@ class ProductServiceTest {
 		} catch (Exception e) {
 			assertEquals(ObjectNotFoundException.class, e.getClass());
             assertEquals(OBJECT_NOT_FOUND, e.getMessage());
+		}
+	}
+	
+	@Test
+	void whenFindByNameThenReturnDataIntegrityViolationException() {
+		when(repository.findByName(NAME))
+    		.thenThrow(new DataIntegrityViolationException(OBJECT_EXISTS));
+		
+		try {
+			MockMultipartFile multipartFile = new MockMultipartFile("file",
+	                "fresh-pepper.jpg",
+	                "image/png, image/jpg, image/jpeg",
+	                "random image".getBytes());
+	 
+			service.create(product, multipartFile);
+		} catch (Exception e) {
+			assertEquals(DataIntegrityViolationException.class, e.getClass());
+            assertEquals(OBJECT_EXISTS, e.getMessage());
 		}
 	}
 	
