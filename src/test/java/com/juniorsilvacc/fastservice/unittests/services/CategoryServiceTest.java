@@ -87,7 +87,7 @@ class CategoryServiceTest {
 	}
 
 	@Test
-	void whenCreateThenReturnSucess() {
+	void whenCreatedCategoryReturnsSuccessfully() {
 		Category entity = new Category(ID, NAME, DESCRIPTION);
 		Category persisted = entity;
 		
@@ -107,7 +107,7 @@ class CategoryServiceTest {
 	}
 	
 	@Test
-	void deleteWithSuccess() {
+	void deleteCategoryWithSuccess() {
 		Category entity = new Category(ID, NAME, DESCRIPTION);
 		entity.setId(1);
 		
@@ -117,7 +117,7 @@ class CategoryServiceTest {
 	}
 
 	@Test
-	void whenUpdateThenReturnSuccess() {
+	void whenUpdatingCategoryReturnsSuccessfully() {
 		Category entity = new Category(ID, NAME, DESCRIPTION);
 		Category persisted = entity;
 		persisted.setId(1);

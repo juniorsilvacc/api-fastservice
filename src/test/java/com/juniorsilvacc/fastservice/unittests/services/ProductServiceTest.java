@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -32,7 +34,6 @@ class ProductServiceTest {
 	@Mock
 	ProductRepository repository;
 	
-	@SuppressWarnings("unused")
 	private Product product;
 	
 	@BeforeEach
@@ -40,9 +41,30 @@ class ProductServiceTest {
 		MockitoAnnotations.openMocks(this);
 		inputProduct();
 	}
+	
+	@Test 
+	void whenFindByIdThenReturnAnProductInstance() {
+		when(repository.findById(ID)).thenReturn(Optional.of(product));
+		
+		var response = service.findById(ID);
+		
+		assertNotNull(response);
+		assertNotNull(response.getId());
+		assertNotNull(response.getLinks());
+		
+		assertNotNull(response.toString().contains("links: [</api/products/v1/1>;rel=\"self\"]"));
+		
+		assertEquals(ProductDTO.class, response.getClass());
+		
+		assertEquals(ID, response.getId());
+		assertEquals(NAME, response.getName());
+		assertEquals(DESCRIPTION, response.getDescription());
+		assertEquals(PRICE, response.getPrice());
+		assertEquals(IMAGE, response.getImage());
+	}
 
 	@Test
-	void whenCreateProductAndThenReturnSucess() {
+	void whenCreatedProductReturnsSuccessfully() {
 		Product entity = new Product(ID, NAME, DESCRIPTION, PRICE, IMAGE);
 		Product persisted = entity;
 		
