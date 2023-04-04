@@ -28,7 +28,7 @@ class OrderServiceTest {
 	private static final String NAME = "Júniior Silva";
 	private static final Integer TABLE = 10;
 	private static final Boolean DRAFT = true;
-	private static final OffsetDateTime MOMENT = OffsetDateTime.now();
+	private static final OffsetDateTime MOMENT = OffsetDateTime.parse("2019-06-20T19:53:07Z");
 	private static final Status STATUS = Status.PENDING;
 	
 	@InjectMocks
@@ -91,6 +91,30 @@ class OrderServiceTest {
 		assertEquals(DRAFT, objOrders1.getDraft());
 		assertEquals(MOMENT, objOrders1.getMoment());
 		assertEquals(STATUS, objOrders1.getStatus());
+	}
+	
+	@Test
+	void whenCreatedOrderReturnsSuccessfully() {
+		Order entity = new Order(ID, NAME, TABLE, DRAFT, MOMENT, STATUS);
+		Order persisted = entity;
+		
+		when(repository.save(entity)).thenReturn(persisted);
+		
+		OrderDTO response = service.create(persisted);
+		
+		assertNotNull(response);
+		assertNotNull(response.getLinks());
+		assertNotNull(response.toString().contains("links: [</api/orders/v1/1>;rel=\"self\"]"));
+		
+		
+		assertEquals(OrderDTO.class, response.getClass());
+		
+		assertEquals(ID, response.getId());
+		assertEquals(NAME, response.getName());
+		assertEquals(TABLE, response.getTable());
+		assertEquals(DRAFT, response.getDraft());
+		assertEquals(MOMENT, OffsetDateTime.parse("2019-06-20T19:53:07Z"));
+		assertEquals(STATUS, response.getStatus());
 	}
 	
 	private void inputOrder() {
