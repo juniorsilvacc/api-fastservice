@@ -117,6 +117,16 @@ class OrderServiceTest {
 		assertEquals(STATUS, response.getStatus());
 	}
 	
+	@Test
+	void closeOrder() {
+		Order entity = new Order(ID, NAME, TABLE, DRAFT, MOMENT, STATUS);
+		entity.setId(1);
+		
+		when(repository.findById(1)).thenReturn(Optional.of(order));
+		
+		repository.delete(entity);
+	}
+	
 	private void inputOrder() {
 		order = new Order(ID, NAME, TABLE, DRAFT, MOMENT, STATUS);
 	}
