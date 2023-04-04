@@ -20,6 +20,7 @@ import com.juniorsilvacc.fastservice.domain.entities.Order;
 import com.juniorsilvacc.fastservice.domain.enums.Status;
 import com.juniorsilvacc.fastservice.repositories.OrderRepository;
 import com.juniorsilvacc.fastservice.services.OrderService;
+import com.juniorsilvacc.fastservice.services.exceptions.ObjectNotFoundException;
 
 @SpringBootTest
 class OrderServiceTest {
@@ -30,6 +31,9 @@ class OrderServiceTest {
 	private static final Boolean DRAFT = true;
 	private static final OffsetDateTime MOMENT = OffsetDateTime.parse("2019-06-20T19:53:07Z");
 	private static final Status STATUS = Status.PENDING;
+	
+	private static final String OBJECT_NOT_FOUND = "Pedido com id: %d não encontrado " + ID;
+	private static final String OBJECT_EXISTS = "Esse produto já existe";
 	
 	@InjectMocks
 	private OrderService service;
@@ -171,6 +175,19 @@ class OrderServiceTest {
 		
 		assertEquals(ID, response.getId());
 		assertEquals(Status.FINISHED, response.getStatus());
+	}
+	
+	@Test
+	void whenFindByIdThenReturnObjectNotFoundException() {
+		when(repository.findById(ID))
+        	.thenThrow(new ObjectNotFoundException(OBJECT_NOT_FOUND));
+		
+		try {
+			service.findById(ID);
+		} catch (Exception e) {
+			assertEquals(ObjectNotFoundException.class, e.getClass());
+            assertEquals(OBJECT_NOT_FOUND, e.getMessage());
+		}
 	}
 	
 	private void inputOrder() {
