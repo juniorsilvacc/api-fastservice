@@ -16,6 +16,7 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -36,7 +37,7 @@ public class Product implements Serializable{
 	@Size(max = 255)
 	private String description;
 	
-	@NotEmpty(message = "O campo preço é obrigatório")
+	@NotNull(message = "O campo preço é obrigatório")
 	private Double price;
 	
 	private String image;

@@ -1,4 +1,4 @@
-package com.juniorsilvacc.fastservice.unittests.mockito.services;
+package com.juniorsilvacc.fastservice.unittests.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -134,7 +134,7 @@ class CategoryServiceTest {
 		assertNotNull(response.getId());
 		assertNotNull(response.getLinks());
 		
-		assertNotNull(response.toString().contains("links: [</api/books/v1/1>;rel=\"self\"]"));
+		assertNotNull(response.toString().contains("links: [</api/categories/v1/1>;rel=\"self\"]"));
         
         assertEquals(1, response.getId());
         assertEquals(NAME, response.getName());
