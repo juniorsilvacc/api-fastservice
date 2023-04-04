@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -66,6 +67,31 @@ class ProductServiceTest {
 		assertEquals(DESCRIPTION, response.getDescription());
 		assertEquals(PRICE, response.getPrice());
 		assertEquals(IMAGE, response.getImage());
+	}
+	
+	@Test
+	void whenFindAllThenReturnAnListOfProducts() {
+		when(repository.findAll()).thenReturn(List.of(product));
+		
+		List<ProductDTO> response = service.findAll();
+		
+		assertEquals(1, response.size());
+		
+		var objProduct1 = response.get(0);
+		
+		assertNotNull(response);
+		
+		assertNotNull(objProduct1.getLinks());
+		assertNotNull(objProduct1.toString().contains("links: [</api/products/v1/1>;rel=\"self\"]"));
+		
+		
+		assertEquals(ProductDTO.class, objProduct1.getClass());
+		
+		assertEquals(ID, objProduct1.getId());
+		assertEquals(NAME, objProduct1.getName());
+		assertEquals(DESCRIPTION, objProduct1.getDescription());
+		assertEquals(PRICE, objProduct1.getPrice());
+		assertEquals(IMAGE, objProduct1.getImage());
 	}
 
 	@Test
