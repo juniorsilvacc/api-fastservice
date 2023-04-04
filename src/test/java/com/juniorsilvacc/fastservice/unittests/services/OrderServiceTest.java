@@ -20,6 +20,7 @@ import com.juniorsilvacc.fastservice.domain.entities.Order;
 import com.juniorsilvacc.fastservice.domain.enums.Status;
 import com.juniorsilvacc.fastservice.repositories.OrderRepository;
 import com.juniorsilvacc.fastservice.services.OrderService;
+import com.juniorsilvacc.fastservice.services.exceptions.DataIntegrityViolationException;
 import com.juniorsilvacc.fastservice.services.exceptions.ObjectNotFoundException;
 
 @SpringBootTest
@@ -33,7 +34,7 @@ class OrderServiceTest {
 	private static final Status STATUS = Status.PENDING;
 	
 	private static final String OBJECT_NOT_FOUND = "Pedido com id: %d não encontrado " + ID;
-	private static final String OBJECT_EXISTS = "Esse produto já existe";
+	private static final String TABLE_EXISTS = "A mesa %d já está em uso" + TABLE;
 	
 	@InjectMocks
 	private OrderService service;
@@ -187,6 +188,19 @@ class OrderServiceTest {
 		} catch (Exception e) {
 			assertEquals(ObjectNotFoundException.class, e.getClass());
             assertEquals(OBJECT_NOT_FOUND, e.getMessage());
+		}
+	}
+	
+	@Test
+	void whenFindByTableThenReturnDataIntegrityViolationException() {
+		when(repository.findByTable(TABLE))
+    		.thenThrow(new DataIntegrityViolationException(TABLE_EXISTS));
+		
+		try {
+			service.create(order);
+		} catch (Exception e) {
+			assertEquals(DataIntegrityViolationException.class, e.getClass());
+            assertEquals(TABLE_EXISTS, e.getMessage());
 		}
 	}
 	
