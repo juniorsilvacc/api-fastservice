@@ -31,8 +31,6 @@ class OrderServiceTest {
 	private static final OffsetDateTime MOMENT = OffsetDateTime.parse("2019-06-20T19:53:07Z");
 	private static final Status STATUS = Status.PENDING;
 	
-	private static final Boolean DRAFTFALSE = false;
-	
 	@InjectMocks
 	private OrderService service;
 	
@@ -151,6 +149,28 @@ class OrderServiceTest {
 		assertEquals(ID, response.getId());
 		assertEquals(false, response.getDraft());
 		assertEquals(Status.SENT, response.getStatus());
+	}
+	
+	@Test
+	void concludeOrder() {
+		Order entity = new Order(ID, NAME, TABLE, DRAFT, MOMENT, STATUS);
+		Order persisted = entity;
+		persisted.setId(1);
+		
+		when(repository.findById(1)).thenReturn(Optional.of(order));
+		when(repository.save(entity)).thenReturn(persisted);
+		
+		var response = service.send(ID);
+		response.setStatus(Status.FINISHED);
+		
+		assertNotNull(response);
+		assertNotNull(response.getLinks());
+		assertNotNull(response.toString().contains("links: [</api/orders/v1/1>;rel=\"self\"]"));
+		
+		assertEquals(OrderDTO.class, response.getClass());
+		
+		assertEquals(ID, response.getId());
+		assertEquals(Status.FINISHED, response.getStatus());
 	}
 	
 	private void inputOrder() {
