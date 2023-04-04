@@ -19,7 +19,7 @@ public class OrderDTO extends RepresentationModel<OrderDTO> implements Serializa
 	private Integer id;
 	private String name;
 	private Integer table;
-	private Boolean draft = false;
+	private Boolean draft = true;
 	private Status status;
 	private OffsetDateTime moment;
 	
@@ -72,7 +72,7 @@ public class OrderDTO extends RepresentationModel<OrderDTO> implements Serializa
 		this.table = table;
 	}
 
-	public Boolean isDraft() {
+	public Boolean getDraft() {
 		return draft;
 	}
 

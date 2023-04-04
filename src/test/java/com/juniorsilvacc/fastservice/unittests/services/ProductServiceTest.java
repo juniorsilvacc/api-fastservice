@@ -32,7 +32,7 @@ class ProductServiceTest {
 	private static final String IMAGE = "fresh-pepper.jpg";
 	
 	private static final String OBJECT_NOT_FOUND = "Produto com id: %d não encontrado " + ID;
-	private static final String OBJECT_EXISTS = "Está categoria já existe";
+	private static final String OBJECT_EXISTS = "Esse produto já existe";
 	
 	@InjectMocks
 	private ProductService service;
