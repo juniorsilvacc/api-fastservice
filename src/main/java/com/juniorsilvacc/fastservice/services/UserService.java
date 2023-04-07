@@ -29,15 +29,15 @@ public class UserService {
 	private PasswordEncoder passwordEncoder;
 	
 	public UserDTO create(User user) {
-		Optional<User> email = repository.findByEmail(user.getEmail());
-		Optional<User> cpf = repository.findByCpf(user.getCpf());
+		User email = repository.findByEmail(user.getEmail());
+		User cpf = repository.findByCpf(user.getCpf());
 		Permission role = permission.findByDescription("ROLE_WAITER");
 
-		if(email.isPresent()) {
+		if(email == null) {
 			throw new DataIntegrityViolationException("O e-mail já existe");
 		}
 		
-		if(cpf.isPresent()) {
+		if(cpf == null) {
 			throw new DataIntegrityViolationException("O CPF já existe");
 		}
 		

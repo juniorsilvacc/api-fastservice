@@ -16,18 +16,19 @@ public class UserDTO implements Serializable {
 	private String email;
 	private String cpf;
 	private String avatar;
+	private String password;
 
 	private List<Permission> permissions;
 
 	public UserDTO() {
 	}
 
-	public UserDTO(Integer id, String user_name, String email, String cpf, String avatar,
-			List<Permission> permissions) {
+	public UserDTO(Integer id, String user_name, String email, String cpf, String avatar, String password, List<Permission> permissions) {
 		this.id = id;
 		this.user_name = user_name;
 		this.email = email;
 		this.cpf = cpf;
+		this.cpf =  password;
 		this.permissions = permissions;
 	}
 
@@ -37,6 +38,7 @@ public class UserDTO implements Serializable {
 		this.email = obj.getEmail();
 		this.cpf = obj.getCpf();
 		this.avatar = obj.getAvatar();
+		this.password = obj.getPassword();
 		this.permissions = obj.getPermissions();
 	}
 
@@ -78,6 +80,14 @@ public class UserDTO implements Serializable {
 
 	public void setAvatar(String avatar) {
 		this.avatar = avatar;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public List<Permission> getPermissions() {

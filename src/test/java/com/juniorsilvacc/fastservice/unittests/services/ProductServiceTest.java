@@ -38,7 +38,7 @@ class ProductServiceTest {
 	private ProductService service;
 	
 	@Mock
-	ProductRepository repository;
+	private ProductRepository repository;
 	
 	private Product product;
 	
