@@ -90,7 +90,7 @@ O projeto foi construído com a IDE Eclipse. Para executá-lo:
 1. Baixe e instale o Docker Desktop
 2. Faça o Download do zip do projeto ou clone o repositório Git e extraia o conteúdo do arquivado compactado
 3. Navegue até a pasta do projeto e abra o Prompt de Comando do Windows ou Terminal do GNU/Linux
-4. Execuete o comando `mvn clean package -DskipTest`. Ele irá gerar os target jar
+4. Execuete o comando `mvn clean package -DskipTests`. Ele irá gerar os target jar
 5. Execute o comando `docker-compose up -d --build`. Ele irá criar um container chamado api-fastservice e db_fastservice-postgres contendo a imagem do banco de dados PostgreSQL e Jdk19.
 
 ![Captura de tela 2023-04-12 203236](https://user-images.githubusercontent.com/43589505/231607980-d6ce2108-7ed0-4e8e-b681-4b9d2b0a6603.png)
