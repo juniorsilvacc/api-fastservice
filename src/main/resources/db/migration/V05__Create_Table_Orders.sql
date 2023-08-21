@@ -1,0 +1,8 @@
+CREATE TABLE tb_order (
+	id SERIAL PRIMARY KEY,
+	name VARCHAR(60),
+	position INTEGER NOT NULL,
+	draft BOOLEAN DEFAULT TRUE,
+	status INTEGER,
+	moment DATE
+);

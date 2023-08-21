@@ -1,0 +1,12 @@
+CREATE TABLE tb_user (
+	id SERIAL PRIMARY KEY,
+	user_name VARCHAR(60) NOT NULL,
+	email VARCHAR(50) UNIQUE NOT NULL,
+	cpf VARCHAR(15) UNIQUE NOT NULL,
+	avatar VARCHAR(255),
+	password VARCHAR(255) NOT NULL,
+	account_non_expired BOOLEAN DEFAULT TRUE NULL,
+	account_non_locked BOOLEAN DEFAULT TRUE NULL,
+	credentials_non_expired BOOLEAN DEFAULT TRUE NULL,
+	enabled BOOLEAN DEFAULT TRUE NULL
+);
